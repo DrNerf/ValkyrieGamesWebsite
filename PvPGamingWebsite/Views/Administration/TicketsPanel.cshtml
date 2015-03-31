@@ -1,0 +1,135 @@
+﻿@model List<PvPGamingWebsite.Models.Ticket>
+@{
+    ViewBag.Title = "TicketsPanel";
+}
+
+<h2>Tickets Panel</h2>
+<div class="form-control" style="height:50px; vertical-align:middle;">
+    <span class="glyphicon glyphicon-cog" style="font-size:28px;">
+    </span>
+    <div style="display:inline-block;">
+        <div>
+            <label for="showSeen">Show seen: </label>
+            <input type="checkbox" id="showSeen" />
+            <input type="text" id="datePicker" placeholder="Date" />
+            <span class="input-group-btn">
+                <button class="btn btn-default" onclick="clearDate();">
+                    <span class="icon-remove"></span>
+                </button>
+                <button class="btn btn-default" onclick="sendDate();">
+                    <span class="icon-filter"></span>
+                </button>
+            </span>
+        </div>
+    </div>
+</div>
+<div>
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Sender</th>
+                <th>Email</th>
+                <th>Sent</th>
+                <th>Message</th>
+                <th>Controls</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ticket in Model)
+            {
+                <tr>
+                    <td>@ticket.Id</td>
+                    <td>@ticket.Sender</td>
+                    <td><a href="@ticket.Email">@ticket.Email</a></td>
+                    <td>@ticket.DateSend</td>
+                    <td>
+                        <button class="btn btn-default" onclick="showPopup('@(ticket.Message)');">
+                            <span class="icon-envelope"></span>Show
+                        </button>
+                    </td>
+                    <td>
+                        @if(!ticket.Seen)
+                        {
+                            <a style="text-shadow:none;" href="/Administration/TicketMarkAsSeen?id=@ticket.Id" class="btn btn-success"><span class="icon-ok"></span> Mark as seen</a>
+                        }
+                        else
+                        {
+                            <a style="text-shadow:none;" class="btn btn-success"><span class="icon-ok"></span> SEEN!</a>
+                        }
+                        <a style="text-shadow:none;" href="/Administration/TicketDelete?id=@ticket.Id" class="btn btn-danger"><span class="icon-trash"></span> Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div id="dialog" title="Ticket message">
+    <p id="DialogContent">
+
+    </p>
+</div>
+
+<div id="Shadow" style="position:fixed; left:0px; top:0px; width:100%; height:100%; opacity:0.7; background-color:black; display:none;"></div>
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section head{
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+}
+
+@section scripts{
+    <script src="~/Scripts/jquery-ui-1.8.24.min.js"></script>
+    <script>
+        jQuery("#datePicker").datepicker();
+
+        function showPopup(content) {
+            document.getElementById("DialogContent").innerText = content;
+            jQuery("#dialog").dialog({
+                close: function( event, ui ) {
+                    jQuery("#Shadow").fadeOut(500);
+                }
+            });
+            jQuery("#Shadow").fadeIn(500);
+        }
+
+        jQuery(document).ready(function () {
+            jQuery("#datePicker").val(getQueryVariable("date"));
+            var showSeen = getQueryVariable("showSeen");
+            if (showSeen == "true") {
+                jQuery("#showSeen").prop('checked', true);
+            }
+        });
+
+        function setToday() {
+            var date = new Date();
+            jQuery("#datePicker").val((date.getMonth() + 1) + "/" + (date.getDay() + 1) + "/" + date.getFullYear());
+        }
+
+        function clearDate() {
+            jQuery("#datePicker").val("");
+            jQuery("#showSeen").prop('checked', false);
+            sendDate();
+        }
+
+        function sendDate() {
+            var showSeen = jQuery("#showSeen").is(":checked");
+            window.location.replace("/Administration/TicketsPanel/" + "?showSeen=" + showSeen + "&date=" + jQuery("#datePicker").val());
+        }
+
+        function getQueryVariable(variable) {
+            var query = window.location.search.substring(1);
+            var vars = query.split("&");
+            for (var i = 0; i < vars.length; i++) {
+                var pair = vars[i].split("=");
+                if (pair[0] == variable) {
+                    return pair[1];
+                }
+            }
+            console.log('Query Variable ' + variable + ' not found');
+            return "";
+        }
+    </script>
+}

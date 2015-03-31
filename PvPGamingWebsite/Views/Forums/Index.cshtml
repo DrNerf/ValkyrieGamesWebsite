@@ -1,0 +1,128 @@
+﻿@using PvPGamingWebsite.Models;
+@model List<Category>
+
+@{
+    ViewBag.Title = "Forums";
+}
+
+<h2>Forums</h2>
+@*<ul style="list-style:none;">
+    @foreach (Category category in Model)
+    {
+        <li style="border:1px solid black; padding:10px;">
+            <h2>
+                @category.Name 
+                @if (User.IsInRole("Moderator"))
+                {
+                    <a href="/Forums/DeleteCategory?CategoryID=@category.Id" class="btn btn-danger">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </a>
+                }
+            </h2>
+            <h5>@category.Description</h5>
+            @if(category.CategoryForums != null)
+            {
+                <ul style="list-style:none;">
+                    @foreach (Forum forum in category.CategoryForums)
+                    {
+                        <li>
+                            <h3><a href="/Forums/Forum/@forum.Id">@forum.Name</a></h3>
+                            <h5 style="display:inline;">@forum.Description</h5>
+                            @if (User.IsInRole("Moderator"))
+                            {
+                                <a href="/Forums/DeleteForum?ForumID=@forum.Id" class="btn btn-danger">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </a>
+                            }
+                        </li>
+                    }
+                </ul>
+            }
+        </li>
+    }
+</ul>*@
+
+<div id="bbpress-forums">
+    @foreach (Category category in Model)
+    {
+        <ul id="forums-list-0" class="bbp-forums">
+            <li class="bbp-header">
+                <ul class="forum-titles">
+                    <li class="bbp-forum-info"><h2>@category.Name</h2> <p>@category.Description</p></li>
+                    <li class="bbp-forum-topic-count">Topics</li>
+                    <li class="bbp-forum-reply-count">Replies</li>
+                    @if(User.IsInRole("Moderator"))
+                    {
+                        <li class="bbp-forum-freshness">Commands</li>
+                    }
+                    else
+                    {
+                        <li class="bbp-forum-freshness"></li>
+                    }
+                </ul>
+            </li>
+            @if(category.CategoryForums != null)
+            {
+                foreach (Forum forum in category.CategoryForums)
+                {
+                    <li class="forumContainer@(forum.Id) bbp-body">
+                        <ul class="post-963 forum type-forum status-publish hentry loop-item-0 odd bbp-forum-status-open bbp-forum-visibility-publish instock">
+                            <li class="bbp-forum-info">
+                                <i class="icon-comments"></i>
+                                <a class="bbp-forum-title" href="/Forums/Forum/@forum.Id" title="Adventure">@forum.Name</a>
+                                <div class="bbp-forum-content">
+                                    <p>@forum.Description</p>
+                                </div>
+                            </li>
+                            <li class="bbp-forum-topic-count">@forum.ForumTopics.Count</li>
+                            @{
+                                int postsCount = 0;
+                                foreach (var item in forum.ForumTopics)
+                                {
+                                    postsCount += item.TopicPosts.Count;
+                                }
+                            }
+                            <li class="bbp-forum-reply-count">@postsCount</li>
+                            <li class="bbp-forum-freshness">
+                                @if(User.IsInRole("Moderator"))
+                                {
+                                    <span onclick="deleteForum(@(forum.Id));" class="delBtn"><i class="icon-trash"></i> Delete</span>
+                                }
+                            </li>
+                        </ul>
+                    </li>
+                }
+            }
+        </ul>
+    }
+</div>
+
+@section head{
+    <style>
+        .delBtn {
+            cursor:pointer;
+        }
+            .delBtn:hover {
+                color:#ff5b5b;
+            }
+    </style>
+}
+
+@section scripts{
+    <script>
+        function deleteForum(forumID) {
+            jQuery.get("/Forums/DeleteForum?ForumID=" + forumID, function (data) {
+                if (data) {
+                    jQuery(".forumContainer" + forumID).slideUp(1000);
+                }
+                else {
+                    new PNotify({
+                        title: 'Whoopsay!',
+                        text: 'Something went very wrong ;(',
+                        type: 'error'
+                    });
+                }
+            });
+        }
+    </script>
+}

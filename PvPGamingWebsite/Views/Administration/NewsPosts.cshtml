@@ -1,0 +1,43 @@
+﻿@model PvPGamingWebsite.Models.Post
+
+@{
+    ViewBag.Title = "Create post";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend></legend>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Title)
+        </div>
+            <input type="text" name="Title" placeholder="Title" />
+            @Html.ValidationMessageFor(model => model.Title)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Body)
+        </div>
+        <div class="editor-field">
+            @*Html.EditorFor(model => model.Body, new object { @class = "jqte-test" })*@
+            @Html.TextAreaFor(x => x.Body, new { style="width:500px; height:250px;" })
+            @Html.ValidationMessageFor(model => model.Body)
+        </div>
+
+        <p>
+            <input type="submit" value="Create" class="button-small" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,196 @@
+﻿@model PvPGamingWebsite.ViewModels.ProjectsPanelViewModel
+
+@{
+    ViewBag.Title = "ProjectsPanel";
+}
+
+<h2>ProjectsPanel</h2>
+
+<div>
+    <h2>Projects:</h2>
+    <div>
+        <table class="table table-hover table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Date created</th>
+                    <th>Tumbnail URL</th>
+                    <th>Header URL</th>
+                    <th>Commands</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var project in Model.Projects)
+                {
+                    <tr id="project@(project.Id)">
+                        <td>@project.Id</td>
+                        <td>@project.Title</td>
+                        <td>
+                            <button class="btn btn-info" onclick="showDescription('@(project.Description)');">
+                                <span class="glyphicon glyphicon-envelope"></span> Description
+                            </button>
+                        </td>
+                        <td>@project.Status.Title</td>
+                        <td>@project.DateCreated</td>
+                        <td>@project.ThumbnailURL</td>
+                        <td>@project.HeaderURL</td>
+                        <td>
+                            <button class="btn btn-danger" onclick="deleteProject(@project.Id);">
+                                <span class="icon-trash"></span>
+                            </button>
+                            <button class="btn btn-warning" onclick="showEditDialog(@Json.Encode(project))">
+                                <span class="icon-edit"></span>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div id="descriptionDialog">
+        <p></p>
+    </div>
+
+    <div id="editDialog" style="display:none;">
+        <form action="/Administration/EditProject" method="post">
+            <h3>Update project:</h3>
+            <input style="display:none;" type="number" name="Id" id="projectID" />
+            <label>Title:</label>
+            <input type="text" name="Title" id="projectTitle" class="form-control" />
+            <label>Description:</label>
+            <textarea name="Description" id="projectDescription" class="form-control jqte-editor"></textarea>
+            <label>Thumbnail image:</label>
+            <input type="text" name="ThumbnailURL" id="projectThumbnailURL" class="form-control" />
+            <label>Header image:</label>
+            <input type="text" name="HeaderURL" id="projectHeaderURL" class="form-control" />
+            <label>Status:</label>
+            <select class="form-control" name="projectStatusID" id="projectStatusID">
+                @foreach (var projectStatus in Model.AllProjectsStatuses)
+                {
+                <option value="@projectStatus.Id">@projectStatus.Title</option>
+                }
+            </select>
+            <br />
+            <button type="submit" class="button-small">
+                <span class="icon-ok-sign"></span> Update
+            </button>
+        </form>
+    </div>
+</div>
+
+@using (Html.BeginForm("CreateProject", "Administration")) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <hr />
+        <h4>Create project:</h4>
+        <legend></legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Title)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Title, new { @class="form-control" })
+            @Html.ValidationMessageFor(model => model.Title)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Description)
+        </div>
+        <div class="editor-field">
+            @Html.TextAreaFor(model => model.Description, new { @class="jqte-editor" })
+            @Html.ValidationMessageFor(model => model.Description)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ThumbnailURL)
+        </div>
+        <div class="editor-field">
+            <div class="input-group">
+                <span class="input-group-addon icon-picture"></span>
+                @Html.TextBoxFor(model => model.ThumbnailURL, new { @class = "form-control" , @placeholder="http://imagewebsite.com/image.png" })
+            </div>
+            @Html.ValidationMessageFor(model => model.ThumbnailURL)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.HeaderURL)
+        </div>
+        <div class="editor-field">
+            <div class="input-group">
+                <span class="input-group-addon icon-picture"></span>
+                @Html.TextBoxFor(model => model.HeaderURL, new { @class="form-control", @placeholder="http://imagewebsite.com/image.png" })
+            </div>
+            @Html.ValidationMessageFor(model => model.HeaderURL)
+        </div>
+        <br />
+        <div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.AllProjectsStatuses)
+            </div>
+            <select class="form-control" name="StatusID">
+                @foreach (var projectStatus in Model.AllProjectsStatuses)
+                {
+                <option value="@projectStatus.Id">@projectStatus.Title</option>
+                }
+            </select>
+        </div>
+        <br />
+        <p>
+            <button type="submit" class="button-small">
+                <span class="icon-plus-sign"></span>
+                Create
+            </button>
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section head{
+    <link href="~/Content/themes/base/jquery.ui.all.css" rel="stylesheet" />
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery-ui-1.8.24.min.js"></script>
+    <script>
+        function deleteProject(id) {
+            jQuery.post("/Administration/DeleteProject", { ProjectID: id }, function (data) {
+                if (data) {
+                    jQuery("#project" + id).fadeOut(1000);
+                }
+            });
+        }
+
+        function showDescription(text){
+            jQuery("#descriptionDialog p").text(text);
+            jQuery("#descriptionDialog").dialog({
+                modal: true,
+                title: "Description"
+            });
+        }
+
+        function showEditDialog(project) {
+            jQuery("#editDialog form #projectID").val(project.Id);
+            jQuery("#editDialog form #projectTitle").val(project.Title);
+            jQuery("#editDialog form #projectDescription").val(project.Description);
+            jQuery("#editDialog form #projectThumbnailURL").val(project.ThumbnailURL);
+            jQuery("#editDialog form #projectHeaderURL").val(project.HeaderURL);
+            jQuery("#editDialog form #projectStatusID").val(project.Status.Id);
+            jQuery("#editDialog").dialog({
+                modal: true,
+                title: "Edit project",
+                width: 700,
+                height: 800
+            });
+        }
+    </script>
+}

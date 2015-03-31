@@ -1,0 +1,104 @@
+﻿@model PvPGamingWebsite.Models.UserProfileData
+
+@{
+    ViewBag.Title = "Profile";
+}
+
+<h2>@(User.Identity.Name)'s Profile</h2>
+
+
+<div class="row">
+    <div class="span12">
+        <div class="block block-text_block span6 first cf">
+            @if (String.IsNullOrEmpty(Model.PictureURL))
+            {
+                <img style="margin-left:25px;" onerror="brokenUrl();" id="profileImage" src="~/Images/no-avatar.jpg" alt="Your profile picture." width="400" height="400" />
+            }
+            else
+            {
+                <img style="margin-left:25px;" onerror="brokenUrl();" id="profileImage" src="@(Model.PictureURL)" alt="Your profile picture." width="400" height="400" />
+            }
+        </div>
+        <div class="block block-text_block span6 cf">
+            @if (Model.IsBanned)
+            {
+                <div class="alert alert-danger">You have been baned!</div>
+            }
+            else
+            {
+                if (Model.IsMuted)
+                {
+                <div class="alert alert-warning">You have been muted from all chats!</div>
+                }
+                else
+                {
+                    <div class="alert alert-success">Your account status is ACTIVE!</div>
+                }
+            }
+            <br />
+            <form method="post" action="/Home/SaveProfile">
+                <input type="number" value="@Model.Id" name="Id" style="display:none;" />
+                <input type="number" value="@Model.UserId" name="UserId" style="display:none;" />
+                <div class="input-append">
+                    <input name="PictureURL" id="imageURL" type="text" placeholder="Profile image url" value="@(Model.PictureURL)" />
+                    <span class="add-on">
+                        @*<button type="button" class="" onclick="testImageURL();">
+                            <span class="icon-bolt"></span>
+                        </button>*@
+                        <span onclick="testImageURL();" id="ImageTestBtn" class="icon-bolt"></span>
+                    </span>
+                </div>
+                <br />
+                <input name="Email" id="emailAddress" class="form-control" type="email" placeholder="Email" value="@(Model.Email)" />
+                <div class="input-group">
+                    <span class="input-group-addon">Your favorite color: </span>
+                    <input onchange="testColor();" name="Color" id="color" class="form-control" type="color" value="@(Model.Color)" />
+                </div>
+                <br>
+                <button type="submit" class="button">
+                    <span class="icon-ok"></span> Save
+                </button>
+            </form>
+            <br />
+            <div class="alert alert-warning">
+                Your email will not be used for spam or advertising.
+            <br />
+                Its going to be visible for other users.
+            </div>
+        </div>
+    </div>
+</div>
+
+@section head{
+    <style>
+        #ImageTestBtn:hover {
+            color:#0094ff;
+        }
+
+        #ImageTestBtn {
+            cursor:pointer;
+        }
+    </style>
+}
+
+@section scripts{
+    <script>
+        var defaultURL = "@Url.Content("~/Images/no-avatar.jpg")";
+        function testImageURL() {
+            jQuery("#profileImage").attr("src", jQuery("#imageURL").val());
+        }
+
+        function brokenUrl() {
+            new PNotify({
+                title: 'Oh No!',
+                text: 'Seems like your image url is broken ;(',
+                type: 'error'
+            });
+            jQuery("#profileImage").attr("src", defaultURL);
+        }
+
+        function testColor() {
+            console.log(jQuery("#color").val());
+        }
+    </script>
+}

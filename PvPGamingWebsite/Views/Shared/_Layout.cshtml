@@ -1,0 +1,368 @@
+﻿@*<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>@@ViewBag.Title - My ASP.NET MVC Application</title>
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <meta name="viewport" content="width=device-width" />
+        @@Styles.Render("~/Content/css")
+        <link rel="stylesheet" href="~/Content/jquery-te-1.4.0.css" />
+        <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+        <link href="~/Content/bootstrap-theme.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
+        <link href="~/Content/pnotify.custom.min.css" rel="stylesheet" />
+        <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+        <script src="~/Scripts/bootstrap.min.js"></script>
+        <script src="//code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
+        <script src="~/Scripts/pnotify.custom.min.js"></script>
+        @@Scripts.Render("~/bundles/modernizr")
+        @@Scripts.Render("~/bundles/jqueryval")
+        @@RenderSection("head", false)
+    </head>
+    <body>
+        <header>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p class="site-title">@@Html.ActionLink("your logo here", "Index", "Home")</p>
+                </div>
+                <div class="float-right">
+                    <section id="login">
+                        @@Html.Partial("_LoginPartial")
+                    </section>
+                    <nav>
+                        <ul id="menu">
+                            <li>@@Html.ActionLink("Home", "Index", "Home")</li>
+                            <li>@@Html.ActionLink("About", "About", "Home")</li>
+                            <li>@@Html.ActionLink("Contact", "Contact", "Home")</li>
+                            <li>@@Html.ActionLink("Ticket", "Ticket", "Home")</li>
+                            <li>@@Html.ActionLink("Forums", "Index", "Forums")</li>
+                            <li>@@Html.ActionLink("Chat", "Index", "Chat")</li>
+                            <li>@@Html.ActionLink("Administration", "Index", "Administration")</li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </header>
+        <div id="body">
+            @@RenderSection("featured", required: false)
+            <section class="content-wrapper main-content clear-fix">
+                @@RenderBody()
+            </section>
+        </div>
+        <footer>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p>&copy; @@DateTime.Now.Year - My ASP.NET MVC Application</p>
+                </div>
+            </div>
+        </footer>
+
+        @@RenderSection("scripts", required: false)
+    </body>
+</html>*@
+
+
+<!doctype html>
+<html lang="en-US">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<title>@ViewBag.Title</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="">
+		<meta name="keywords" content="">
+		<!-- CSS -->
+        <link href="~/Content/pnotify.custom.min.css" rel="stylesheet" />
+		<link rel="shortcut icon" href="~/Content/design/img/favicon.png">
+		<link rel="stylesheet" href="~/Content/design/style.css">
+		<link rel="stylesheet" id="custom-style-css"  href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700italic,700,800,800italic" type="text/css" media="all" />
+        @RenderSection("head", false)
+	</head>
+	<body class="home page page-id-26 page-template page-template-tmp-no-title-php">
+		<div id="main_wrapper">
+			<div class="container logo">
+			<!-- Logo -->
+			<a class="brand" href="/Home/Index">
+                <img src="~/Images/VGLogo.png" alt="" style="width:150px; height:150px;" />
+			</a>
+			<!-- End Logo -->
+			<div class="clear"></div>
+             @RenderSection("featured", false)
+		</div>
+		<!-- NAVBAR -->
+		<div class="navbar navbar-inverse container">
+				<div class="navbar-inner">
+					<button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					</button>
+					<div class="nav-collapse collapse">
+						<div class="menu-main-container">
+							<ul class="nav">
+								<li>
+									<a href="/Home/Index">Home</a>
+								</li>
+								<li>
+									<a href="/Forums/Index">Forums</a>
+								</li>
+								<li>
+									<a href="/Chat/Index">Chat room</a>
+								</li>
+								<li>
+                                    <a href="shop.html">Projects</a>
+								</li>
+								<li>
+									<a href="/Home/Team">The team</a>
+								</li>
+								<li>
+                                    <a href="/Home/Ticket">Contact</a>
+								</li>
+                                @if(Request.IsAuthenticated && User.IsInRole("Moderator"))
+                                {
+								    <li class="dropdown">
+									    <a href="#">Administration</a>
+									    <ul class="sub-menu dropdown-menu">
+										    <li ><a href="/Administration/NewsPosts">News</a></li>
+										    <li><a href="/Administration/RolesPanel">Users roles</a></li>
+										    <li><a href="/Administration/TicketsPanel">Tickes</a></li>
+										    <li><a href="/Administration/ForumPanel">Forums</a></li>
+										    <li><a href="/Administration/ProjectsStatus">Projects status</a></li>
+										    <li><a href="/Administration/ProjectsPanel">Projects</a></li>
+									    </ul>
+								    </li>
+                                }
+							</ul>
+						</div>
+                        <div id="LoginPartialContainer">
+                            @Html.Partial("_LoginPartial")
+                        </div>
+						<form method="get" id="header-searchform" action="http://skywarriorthemes.com/gameaddict/">
+							<input autocomplete="off" value="" name="s" id="header-s" type="text">
+							<input id="header-searchsubmit" value="Search" type="submit">
+							
+						</form>
+					</div>
+					<!--/.nav-collapse -->
+				</div>
+				<!-- /.navbar-inner -->
+			</div>
+		<div id="myModalL" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3>Login</h3>
+			</div>
+			<div class="modal-body">
+				<div id="LoginWithAjax" class="default">
+					<span id="LoginWithAjax_Status"></span>
+					<form name="LoginWithAjax_Form" id="LoginWithAjax_Form" action="" method="post">
+						<table cellpadding="0" cellspacing="0" width="100%">
+							<tbody>
+								<tr id="LoginWithAjax_Username">
+									<td class="username_input">
+										<input name="UserName" placeholder="Username" id="lwa_user_login" class="input" value="" type="text">
+									</td>
+								</tr>
+								<tr id="LoginWithAjax_Password">
+									<td class="password_input">
+										<input placeholder="Password" name="Password" id="lwa_user_pass" class="input" value="" type="password">
+									</td>
+								</tr>
+								<tr>
+									<td colspan="2"></td>
+								</tr>
+								<tr id="LoginWithAjax_Submit">
+									<td id="LoginWithAjax_SubmitButton">
+										<input name="RememberMe" id="lwa_rememberme" value="forever" type="checkbox"> <label>Remember Me</label>
+										<br><br>
+										<input id="LoginAjaxBtn" class="button-small" value="Log In" type="button">
+										<a class="reg-btn button-small" href="/Account/Register">Register</a>
+										<input name="redirect_to" value="#" type="hidden">
+										<input name="testcookie" value="1" type="hidden">
+										<input name="lwa_profile_link" value="" type="hidden">
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="container normal-page">
+			<div class="row">
+				<div class="span12">
+					<div class="template-wrapper">
+						<div id="BodyContainer" class="block span12 first cf">
+							<div id="block-2" class="block block-news_blog_style_block span12 first cf">
+								@RenderBody()
+							</div>
+						</div>
+						@RenderSection("sidebar", false)
+					</div>
+				</div>
+			</div>
+		</div>
+		<footer class="container">
+			<div class="span12">
+					<div class="first footer_widget span3">
+					<h3>Follow us on twitter!</h3>
+						<div class="latest-twitter-tweet"><i class="icon-twitter"></i> "@@wdchomestager If you re-download the file from your Downloads area, it will be the most updated version :) Thanks! ^TK"</div>
+						<div class="latest-twitter-tweet"><i class="icon-twitter"></i> "@@alextintea Looking good! Congrats :D ^TK"</div>
+						<div class="latest-twitter-tweet"><i class="icon-twitter"></i> "@@NickCairl Thanks Nick! Glad you enjoy the site :D ^TK"</div>
+						<div class="latest-twitter-tweet"><i class="icon-twitter"></i> "Hi everyone, site is up again! :) ^CA"</div>
+						<div class="latest-twitter-tweet"><i class="icon-twitter"></i> "Awesome looking forward to new themes! Skywarriors are very cool!"</div>
+						<div id="latest-twitter-follow-link"><a href="http://twitter.com/envato">follow @@envato on twitter</a></div>
+					</div>
+
+				<div class="footer_widget span3">
+					<h3> Latest posts</h3>
+					<ul class="review">
+						<li>
+							<div class="img">
+								<a rel="bookmark" href="#">
+									<img src="~/Content/design/img/defaults/57x57.jpg">
+									<span class="overlay-link"></span>
+								</a>
+							</div>
+							<div class="info">
+								<a href="#">Eget ultrices mauris rhoncus non</a><br>
+								<small><i class="icon-calendar"></i> May 4, 2013 - <i class="icon-comment"></i> 5 Comments</small><br>
+								<div class="overall-score">
+									<div class="rating r-4"></div>
+								</div>
+							</div>
+							<div class="clear"></div>
+						</li>
+						<li>
+							<div class="img">
+								<a rel="bookmark" href="#">
+									<img src="~/Content/design/img/defaults/57x57.jpg">
+									<span class="overlay-link"></span>
+								</a>
+							</div>
+							<div class="info">
+								<a href="#">Etiam massa mauris fermentum a congue id</a><br>
+								<small><i class="icon-calendar"></i> June 17, 2013 - <i class="icon-comment"></i> 3 Comments</small><br>
+								<div class="overall-score">
+									<div class="rating r-45"></div>
+								</div>
+							</div>
+							<div class="clear"></div>
+						</li>
+						<li>
+							<div class="img">
+								<a rel="bookmark" href="#">
+									<img src="~/Content/design/img/defaults/57x57.jpg">
+									<span class="overlay-link"></span>
+								</a>
+							</div>
+							<div class="info">
+								<a href="#">Mauris risus augue fermentum sit amet congue sit amet</a><br>
+								<small><i class="icon-calendar"></i> January 4, 2013 - <i class="icon-comment"></i> 2 Comments</small><br>
+								<div class="overall-score">
+									<div class="rating r-45"></div>
+								</div>
+							</div>
+							<div class="clear"></div>
+						</li>
+						<li>
+							<div class="img">
+								<a rel="bookmark" href="#">
+									<img src="~/Content/design/img/defaults/57x57.jpg">
+									<span class="overlay-link"></span>
+								</a>
+							</div>
+							<div class="info">
+								<a href="#">Duis lacinia nisi vel lorem scelerisque interdum</a><br>
+								<small><i class="icon-calendar"></i> May 4, 2013 - <i class="icon-comment"></i> 2 Comments</small><br>
+								<div class="overall-score">
+									<div class="rating r-4"></div>
+								</div>
+							</div>
+							<div class="clear"></div>
+						</li>
+					</ul>
+				</div>
+				<div class="footer_widget span3">
+					<h3>From the forum</h3>
+					<ul>
+						<li><a class="bbp-forum-title" href="#"><i class="icon-comment"></i>Pellentesque aliquam nibh eget nisi hendreri</a></li>
+						<li><a class="bbp-forum-title" href="#"><i class="icon-comment"></i>Curabitur sollicitudin mi vel auctor auctor</a></li>
+						<li><a class="bbp-forum-title" href="#"><i class="icon-comment"></i>Integer vitae neque ipsum</a></li>
+						<li><a class="bbp-forum-title" href="#"><i class="icon-comment"></i>Pellentesque placerat tincidunt magna quis condimentum</a></li>
+						<li><a class="bbp-forum-title" href="#"><i class="icon-comment"></i>Closed topic</a></li>
+					</ul>
+				</div>
+				<div class="widget-4 last footer_widget span3">
+					<h3>latest works</h3>
+					<div class="wcontent wprojects">
+						<a href="#" data-toggle="tooltip" data-original-title="The swamp lord">
+							<img src="~/Content/design/img/defaults/305x305.jpg" class="attachment-post-thumbnail wp-post-image" alt="7">
+						</a>
+						<a href="#" data-toggle="tooltip" data-original-title="Call of the dragon">
+							<img width="305" height="305" src="~/Content/design/img/defaults/305x305.jpg" class="attachment-post-thumbnail wp-post-image" alt="6">
+						</a>
+						<a href="#" data-toggle="tooltip" data-original-title="Evil intentions">
+							<img width="305" height="305" src="~/Content/design/img/defaults/305x305.jpg" class="attachment-post-thumbnail wp-post-image" alt="5">
+							</a>
+						<a href="#" data-toggle="tooltip" data-original-title="Under the water">
+							<img width="305" height="305" src="~/Content/design/img/defaults/305x305.jpg" class="attachment-post-thumbnail wp-post-image" alt="4">
+						</a>
+						<a href="#" data-toggle="tooltip" data-original-title="The boss">
+							<img width="305" height="305" src="~/Content/design/img/defaults/305x305.jpg" class="attachment-post-thumbnail wp-post-image" alt="3">
+						</a>
+						<a href="#" data-toggle="tooltip" data-original-title="The god">
+							<img width="305" height="305" src="~/Content/design/img/defaults/305x305.jpg" class="attachment-post-thumbnail wp-post-image" alt="2">
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="copyright span12">
+				<p>© &nbsp;Made by Skywarrior Themes.&nbsp;</p>
+				<div class="social">
+					<a data-original-title="Rss" data-toggle="tooltip" class="rss" target="_blank" href="#"><i class="fa fa-rss"></i></a>
+					<a data-original-title="Dribbble" data-toggle="tooltip" class="dribbble" target="_blank" href="#"><i class="fa fa-dribbble"></i> </a>
+					<a data-original-title="Vimeo" data-toggle="tooltip" class="vimeo" target="_blank" href="#"><i class="fa fa-vimeo-square"></i> </a>
+					<a data-original-title="Youtube" data-toggle="tooltip" class="youtube" target="_blank" href=""><i class="fa fa-youtube"></i> </a>
+					<a data-original-title="Twitch" data-toggle="tooltip" class="twitch" target="_blank" href=""><i class="fa fa-gamepad"></i></a>
+					<a data-original-title="Linked in" data-toggle="tooltip" class="linked-in" target="_blank" href="#"><i class="fa fa-linkedin"></i> </a>
+					<a data-original-title="Google plus" data-toggle="tooltip" class="google-plus" target="_blank" href="#"><i class="fa fa-google-plus"></i></a>
+					<a data-original-title="Twitter" data-toggle="tooltip" class="twitter" target="_blank" href="#"><i class="fa fa-twitter"></i></a>
+					<a data-original-title="Facebook" data-toggle="tooltip" class="facebook" target="_blank" href="#"><i class="fa fa-facebook"></i></a>
+				</div>
+			</div>
+		</footer>
+		<!-- JavaScript -->
+		@*<script type="text/javascript" src="~/Content/design/js/jquery.js"></script>*@
+        <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+        @Scripts.Render("~/bundles/modernizr")
+        @Scripts.Render("~/bundles/jqueryval")
+		<script type="text/javascript" src="~/Content/design/js/jquery.cookie.pack.js"></script>
+		<script type="text/javascript" src="~/Content/design/js/jquery-migrate.min.js"></script>
+		<script type="text/javascript" src="~/Content/design/js/jquery.fancybox.js"></script>
+		<script type="text/javascript" src="~/Content/design/js/jquery.elastic.source.js"></script>
+		<script type="text/javascript" src="~/Content/design/js/jquery.carouFredSel-6.2.1-packed.js"></script>
+		<script type="text/javascript" src="~/Content/design/js/jquery-ui-1.10.3.custom.min.js"></script>
+		<script type="text/javascript" src="~/Content/design/js/jquery.ui.totop.js"></script>
+		<script type="text/javascript" src="~/Content/design/js/login-with-ajax.js"></script>
+		<script type="text/javascript" src="~/Content/design/js/bootstrap-button.js"></script>
+		<script type="text/javascript" src="~/Content/design/js/bootstrap-carousel.js"></script>
+		<script type="text/javascript" src="~/Content/design/js/bootstrap-collapse.js"></script>
+		<script type="text/javascript" src="~/Content/design/js/bootstrap-modal.js"></script>
+		<script type="text/javascript" src="~/Content/design/js/bootstrap-tab.js"></script>
+		<script type="text/javascript" src="~/Content/design/js/bootstrap-tooltip.js"></script>
+		<script type="text/javascript" src="~/Content/design/js/bootstrap-transition.js"></script>
+		<script type="text/javascript" src="~/Content/design/js/easing.js"></script>
+		<script type="text/javascript" src="~/Content/design/js/global.js"></script>
+		<script type="text/javascript" src="~/Content/design/js/imagescale.js"></script>
+		<script type="text/javascript" src="~/Content/design/js/login-with-ajax.source.js"></script>
+		<script type="text/javascript" src="~/Content/design/js/main.js"></script>
+		<script type="text/javascript" src="~/Content/design/js/parallax.js"></script>
+		<script type="text/javascript" src="~/Content/design/js/theme.min.js"></script>
+        <script type="text/javascript" src="~/Content/design/js/tabs.js"></script>
+        <script src="~/Scripts/pnotify.custom.min.js"></script>
+        <script src="~/Scripts/LoginAjax.js"></script>
+        @RenderSection("scripts", false)
+		<!-- End JavaScript -->
+	</body>
+</html>

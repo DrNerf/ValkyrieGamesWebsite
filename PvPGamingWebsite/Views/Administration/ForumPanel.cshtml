@@ -1,0 +1,90 @@
+﻿@model List<PvPGamingWebsite.Models.Category>
+@{
+    ViewBag.Title = "Forum Panel";
+}
+
+<h2>Forum Panel</h2>
+
+<div>
+    <form method="post" action="/Administration/CreateForumCategory">
+        <h2>Create forum category</h2>
+        <div class="input-group">
+          <span class="input-group-addon">Title</span>
+          <input type="text" class="form-control" placeholder="Group name" name="Name">
+        </div>
+        <br />
+        <div class="input-group">
+          <span class="input-group-addon">Sub-title</span>
+          <input type="text" class="form-control" placeholder="Group description" name="Description">
+        </div>
+        <br />
+
+        <input type="submit" value="Create" class="button-small" />
+    </form>
+    <br />
+    <form method="post" action="/Administration/CreateForum">
+        <h2>Create forum in category</h2>
+        <div class="input-group">
+          <span class="input-group-addon">Category</span>
+          <select class="form-control" name="CategoryID" id="categoryID">
+              @foreach (var category in Model)
+              {
+                <option value="@category.Id">@category.Name</option>
+              }
+          </select>
+        </div>
+        <br />
+        <div class="input-group">
+          <span class="input-group-addon">Title</span>
+          <input type="text" class="form-control" placeholder="Forum title" name="ForumName">
+        </div>
+
+        <div class="input-group">
+          <span class="input-group-addon">Description</span>
+          <input type="text" class="form-control" placeholder="Forum description" name="ForumDescription">
+        </div>
+        <br />
+
+        <input type="submit" value="Create" class="button-small" />
+        <button class="button-small" type="button" onclick="deleteCategory(jQuery('#categoryID').val());">
+            <i class="icon-trash"></i> Delete category
+        </button>
+    </form>
+</div>
+<br />
+@*<div>
+    <a href="/Forums/DeleteCategory?CategoryID=@category.Id" class="btn btn-danger">
+        <span class="glyphicon glyphicon-trash"></span>
+    </a>
+    <input type="number" id="CategoryID" placeholder="Category id" />
+    <button type="button">
+        <i icon="icon-trash"></i> Delete
+    </button>
+</div>*@
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section scripts{
+    <script>
+        function deleteCategory(categoryID) {
+            jQuery.get("/Forums/DeleteCategory?CategoryID=" + categoryID, function (data) {
+                if (data) {
+                    new PNotify({
+                        title: 'Success',
+                        text: 'Category deleted :)',
+                        type: 'success'
+                    });
+                }
+                else {
+                    new PNotify({
+                        title: 'Whoopsay!',
+                        text: 'Something went very wrong ;( \n Invalid Category!',
+                        type: 'error'
+                    });
+                }
+            });
+        }
+    </script>
+}

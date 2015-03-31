@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = "Administrator panel";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<ul class="list-group" style="list-style:none;">
+    <a class="list-group-item" href="/Administration/NewsPosts"><li><span class="glyphicon glyphicon-pencil"></span> Administrate news</li></a>
+    <a class="list-group-item"  href="/Administration/RolesPanel"><li><span class="glyphicon glyphicon-user"></span> Administrate users roles</li></a>
+    <a class="list-group-item"  href="/Administration/TicketsPanel"><li><span class="glyphicon glyphicon-inbox"></span> Administrate tickets</li></a>
+    <a class="list-group-item"  href="/Administration/ForumPanel"><li><span class="glyphicon glyphicon-list-alt"></span> Administrate forums</li></a>
+    <a class="list-group-item"  href="/Administration/ProjectsStatus"><li><span class="glyphicon glyphicon-flag"></span> Administrate projects status</li></a>
+    <a class="list-group-item"  href="/Administration/ProjectsPanel"><li><span class="glyphicon glyphicon-file"></span> Administrate projects</li></a>
+</ul>
