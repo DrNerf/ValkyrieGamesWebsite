@@ -49,6 +49,11 @@ namespace PvPGamingWebsite.Controllers
             return View();
         }
 
+        public ActionResult Team()
+        {
+            return View();
+        }
+
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
