@@ -1,0 +1,139 @@
+﻿@model List<PvPGamingWebsite.Models.Project>
+
+@{
+    ViewBag.Title = "Projects";
+}
+
+<h2>Projects</h2>
+
+@*<div>
+    @for (int i = 0; i < Model.Count; i++)
+    {
+        string rowClass = "";
+        if (i == 0 || i % 3 == 0)
+        {
+            rowClass = "row";
+        }
+        else
+        {
+            rowClass = "inline";
+        }
+        
+        <div class="@rowClass">
+            @for (int j = i; j < i + 3; j++)
+            {
+                if (j > Model.Count - 1)
+                {
+                    break;
+                }
+                <div class="blog-post span4">
+                <div class="blog-image img_thumb entry-thumb">
+                    <a href="blog-post.html"><img src="~/Content/design/img/defaults/817x320.jpg" class="attachment-small wp-post-image"></a>
+                    <div class="blog-date isodate-blog">
+                        <span class="date">@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(Model[j].DateCreated.Month)<br>@Model[j].DateCreated.Day</span>
+                        <div class="plove">
+                            <a title="Love this" id="heart-love-499" class="heart-love" href="#" name="heart-love-499"><span class="heart-love-count">68</span></a>
+                        </div>
+                    </div>
+                    <div class="blog-rating">
+                        <div class="overall-score">
+                            <div class="rating r-45"></div>
+                        </div>
+                    </div><!-- blog-rating -->
+                </div><!-- blog-image -->
+                <div class="blog-content">
+                    <h2>
+                        <a href="blog-post.html">@Model[j].Title</a>
+                    </h2>
+                    <p>
+                        @Model[j].Description
+                    </p>
+                </div><!-- blog-content -->
+                <div class="blog-info">
+                    <div class="post-pinfo">
+                        <span class="icon-user"></span><a>admin</a>    <span class="icon-comment"></span><a data-toggle="tooltip" href="#" data-original-title="3 Comments">3 Comments</a>   <a href="#">Adventure,</a> <a href="#">RPG,</a> <a href="#">Shooter,</a> <a href="#">Strategy,</a>
+                    </div><!-- post-pinfo -->
+                    <a class="button-small" href="#">Read more</a>
+                    <div class="clear"></div>
+                </div><!-- blog-info -->
+            </div>
+                i = j;
+            }
+        </div>
+    }
+</div>*@
+
+<div>
+    @{int length = Model.Count;}
+    @for (int i = 0; i < length; i++)
+    {
+        var elems = Model.Take(3);
+        if (elems.FirstOrDefault() == null)
+        {
+            break;
+        }
+        <div class="row" style="margin-bottom:2.9%;">
+            @foreach (var item in elems)
+            {
+                if (item == null)
+                {
+                    break;
+                }
+                <div class="blog-post span4">
+                    <div class="blog-image img_thumb entry-thumb">
+                        <a href="blog-post.html"><img src="~/Content/design/img/defaults/817x320.jpg" class="attachment-small wp-post-image"></a>
+                        <div class="blog-date isodate-blog">
+                            <span class="date">@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(item.DateCreated.Month)<br>@item.DateCreated.Day</span>
+                            <div class="plove">
+                                <a title="Love this" id="heart-love-499" class="heart-love" href="#" name="heart-love-499"><span class="heart-love-count">68</span></a>
+                            </div>
+                        </div>
+                        <div class="blog-rating">
+                            <div class="overall-score">
+                                <div class="rating r-45"></div>
+                            </div>
+                        </div><!-- blog-rating -->
+                    </div><!-- blog-image -->
+                    <div class="blog-content">
+                        <h2>
+                            <a href="blog-post.html">@item.Title</a>
+                        </h2>
+                        <p>
+                            @item.Description
+                        </p>
+                    </div><!-- blog-content -->
+                    <div class="blog-info">
+                        <div class="post-pinfo">
+                            <span class="icon-user"></span><a>admin</a>    <span class="icon-comment"></span><a data-toggle="tooltip" href="#" data-original-title="3 Comments">3 Comments</a>   <a href="#">Adventure,</a> <a href="#">RPG,</a> <a href="#">Shooter,</a> <a href="#">Strategy,</a>
+                        </div><!-- post-pinfo -->
+                        <a class="button-small" href="#">Read more</a>
+                        <div class="clear"></div>
+                    </div><!-- blog-info -->
+                </div>
+            }
+        </div>
+        if (Model.Count > 2)
+        {
+            Model.RemoveRange(0, 3);
+        }
+        else
+        {
+            if (Model.Count > 1)
+            {
+                Model.RemoveRange(0, 2);
+            }
+            else
+            {
+                Model.RemoveAt(0);
+            }
+        }
+    }
+</div>
+
+@section head{
+    <style>
+        .inline {
+            display:inline !important;
+        }
+    </style>
+}

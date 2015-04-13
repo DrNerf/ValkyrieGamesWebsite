@@ -110,7 +110,7 @@
 									<a href="/Chat/Index">Chat room</a>
 								</li>
 								<li>
-                                    <a href="shop.html">Projects</a>
+                                    <a href="/Home/Projects">Projects</a>
 								</li>
 								<li>
 									<a href="/Home/Team">The team</a>
@@ -204,84 +204,44 @@
 		</div>
 		<footer class="container">
 			<div class="span12">
+                <div class="footer_widget span3">
+					<h3>News</h3>
+                    <script id="NewsFooterTemplate" type="text/x-jQuery-tmpl">
+						<li>
+                            <i class="icon-circle"></i> ${Title}
+                            <br />
+						    <small><i class="icon-calendar"></i> ${formatDate(PostDate)}</small>
+						</li>
+                    </script>
+					<ul id="NewsFooter">
+					</ul>
+				</div>
 
 				<div class="footer_widget span3">
-					<h3> Latest posts</h3>
-					<ul class="review">
-						<li>
-							<div class="img">
-								<a rel="bookmark" href="#">
-									<img src="~/Content/design/img/defaults/57x57.jpg">
-									<span class="overlay-link"></span>
-								</a>
-							</div>
+					<h3>Latest topics</h3>
+                    <script id="TopicsFooterTemplate" type="text/x-jQuery-tmpl">
+                        <li>
 							<div class="info">
-								<a href="#">Eget ultrices mauris rhoncus non</a><br>
-								<small><i class="icon-calendar"></i> May 4, 2013 - <i class="icon-comment"></i> 5 Comments</small><br>
-								<div class="overall-score">
-									<div class="rating r-4"></div>
-								</div>
+								<a href="/Forums/Topic/${Id}"><b style="font-size:16px;"><i class="icon-comments"></i> ${Name}</b></a><br>
+								<small><i class="icon-calendar"></i> ${formatDate(DateTimeCreated)} - <i class="icon-comment"></i> ${TopicPosts.length} Comments</small><br>
 							</div>
 							<div class="clear"></div>
 						</li>
-						<li>
-							<div class="img">
-								<a rel="bookmark" href="#">
-									<img src="~/Content/design/img/defaults/57x57.jpg">
-									<span class="overlay-link"></span>
-								</a>
-							</div>
-							<div class="info">
-								<a href="#">Etiam massa mauris fermentum a congue id</a><br>
-								<small><i class="icon-calendar"></i> June 17, 2013 - <i class="icon-comment"></i> 3 Comments</small><br>
-								<div class="overall-score">
-									<div class="rating r-45"></div>
-								</div>
-							</div>
-							<div class="clear"></div>
-						</li>
-						<li>
-							<div class="img">
-								<a rel="bookmark" href="#">
-									<img src="~/Content/design/img/defaults/57x57.jpg">
-									<span class="overlay-link"></span>
-								</a>
-							</div>
-							<div class="info">
-								<a href="#">Mauris risus augue fermentum sit amet congue sit amet</a><br>
-								<small><i class="icon-calendar"></i> January 4, 2013 - <i class="icon-comment"></i> 2 Comments</small><br>
-								<div class="overall-score">
-									<div class="rating r-45"></div>
-								</div>
-							</div>
-							<div class="clear"></div>
-						</li>
-						<li>
-							<div class="img">
-								<a rel="bookmark" href="#">
-									<img src="~/Content/design/img/defaults/57x57.jpg">
-									<span class="overlay-link"></span>
-								</a>
-							</div>
-							<div class="info">
-								<a href="#">Duis lacinia nisi vel lorem scelerisque interdum</a><br>
-								<small><i class="icon-calendar"></i> May 4, 2013 - <i class="icon-comment"></i> 2 Comments</small><br>
-								<div class="overall-score">
-									<div class="rating r-4"></div>
-								</div>
-							</div>
-							<div class="clear"></div>
-						</li>
+                    </script>
+					<ul class="review" id="TopicsFooter">
+						
 					</ul>
 				</div>
 				<div class="footer_widget span3">
 					<h3>From the forum</h3>
-					<ul>
-						<li><a class="bbp-forum-title" href="#"><i class="icon-comment"></i>Pellentesque aliquam nibh eget nisi hendreri</a></li>
-						<li><a class="bbp-forum-title" href="#"><i class="icon-comment"></i>Curabitur sollicitudin mi vel auctor auctor</a></li>
-						<li><a class="bbp-forum-title" href="#"><i class="icon-comment"></i>Integer vitae neque ipsum</a></li>
-						<li><a class="bbp-forum-title" href="#"><i class="icon-comment"></i>Pellentesque placerat tincidunt magna quis condimentum</a></li>
-						<li><a class="bbp-forum-title" href="#"><i class="icon-comment"></i>Closed topic</a></li>
+                    <script id="PostsFooterTemplate" type="text/x-jQuery-tmpl">
+						<li>
+                            <i class="icon-comment"></i> ${Poster} - ${Body}
+                            <br />
+						    <small><i class="icon-calendar"></i> ${formatDate(PostDateTime)}</small>
+						</li>
+                    </script>
+					<ul id="PostsFooter">
 					</ul>
 				</div>
 				<div class="widget-4 last footer_widget span3">
@@ -309,7 +269,8 @@
 				</div>
 			</div>
 			<div class="copyright span12">
-				<p>© &nbsp;Made by Skywarrior Themes.&nbsp;</p>
+				<p>© &nbsp;Design made by Skywarrior Themes.&nbsp;</p>
+                <p style="float:right; margin-right:15px;">BETA</p>
 			</div>
 		</footer>
 		<!-- JavaScript -->
@@ -342,6 +303,8 @@
         <script type="text/javascript" src="~/Content/design/js/tabs.js"></script>
         <script src="~/Scripts/pnotify.custom.min.js"></script>
         <script src="~/Scripts/LoginAjax.js"></script>
+        <script src="~/Scripts/jQueryTmpl.js"></script>
+        <script src="~/Scripts/FooterLoader.js"></script>
         @RenderSection("scripts", false)
 		<!-- End JavaScript -->
 	</body>

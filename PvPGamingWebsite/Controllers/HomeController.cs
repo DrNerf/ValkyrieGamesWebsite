@@ -7,6 +7,9 @@ using PvPGamingWebsite.Contexts;
 using WebMatrix.WebData;
 using PvPGamingWebsite.Filters;
 using PvPGamingWebsite.Models;
+using PvPGamingWebsite.ViewModels;
+using System.Data.Entity;
+using PvPGamingWebsite.Statics;
 
 namespace PvPGamingWebsite.Controllers
 {
@@ -127,6 +130,44 @@ namespace PvPGamingWebsite.Controllers
             UsersContext db = new UsersContext();
             int userId = db.UserProfiles.FirstOrDefault(x => x.UserName == name).UserId;
             return View(DataBase.UsersProfiles.FirstOrDefault(x => x.UserId == userId));
+        }
+
+
+        public ActionResult GetFooterRecords(int count)
+        {
+            FooterDataViewModel viewModel = new FooterDataViewModel();
+            viewModel.LatestTopics = DataBase.ForumTopics.Include(x => x.TopicPosts).OrderBy(x => x.DateTimeCreated).Take(count).ToList();
+            viewModel.LatestPosts = DataBase.ForumPosts.Take(count).OrderBy(x => x.PostDateTime).ToList();
+            viewModel.LatestNews = DataBase.Posts.Take(count).OrderBy(x => x.PostDate).ToList();
+
+            foreach (var item in viewModel.LatestTopics)
+	        {
+                item.Name = Methods.TrimWithDotting(item.Name, 15);
+	        }
+
+            foreach (var item in viewModel.LatestPosts)
+            {
+                item.Body = Methods.TrimWithDotting(item.Body, 20);
+            }
+
+            foreach (var item in viewModel.LatestNews)
+            {
+                item.Title = Methods.TrimWithDotting(item.Title, 20);
+            }
+
+            return Json(viewModel, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult Projects()
+        {
+            var projects = DataBase.Projects.ToList();
+            foreach (var item in projects)
+            {
+                item.Title = Methods.TrimWithDotting(item.Title, 15);
+                item.Description = Methods.TrimWithDotting(item.Description, 25);
+            }
+
+            return View(projects);
         }
     }
 }

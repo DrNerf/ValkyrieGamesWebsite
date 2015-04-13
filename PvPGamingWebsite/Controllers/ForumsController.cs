@@ -235,5 +235,19 @@ namespace PvPGamingWebsite.Controllers
             DataBase.SaveChanges();
             return Redirect("/Forums/Topic/" + TopicID);
         }
+
+        [HttpGet]
+        public ActionResult GetLastTopics(int count)
+        {
+            var lastNTopics = DataBase.ForumTopics.Include(x => x.TopicPosts).Take(count).ToList();
+            return Json(lastNTopics, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult GetLastForumPosts(int count)
+        {
+            var lastNPosts = DataBase.ForumPosts.Take(count).ToList();
+            return Json(lastNPosts, JsonRequestBehavior.AllowGet);
+        }
     }
 }
