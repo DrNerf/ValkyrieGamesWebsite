@@ -1,0 +1,53 @@
+﻿@model PvPGamingWebsite.Models.RolesPanelModel
+
+@{
+    ViewBag.Title = "Roles panel";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Add/Remove roles to/from users</h2>
+
+@using (Html.BeginForm("AddRoleToUser", "Administration")) {
+        @Html.AntiForgeryToken()
+    <fieldset>
+        <legend>Add role to user</legend>
+        
+        <input type="text" name="Name" placeholder="Username" />
+    
+        <select name="RoleName">
+            <option value="User">User</option>
+            <option value="SuperUser">SuperUser</option>
+            <option value="Moderator">Moderator</option>
+            <option value="Administrator">Administrator</option>
+        </select>
+    
+        <br />
+        <input type="submit" value="Add" class="button-small" />
+    </fieldset>
+}
+
+<hr />
+
+@using (Html.BeginForm("RemoveRoleToUser", "Administration")) {
+        @Html.AntiForgeryToken()
+    <fieldset>
+        <legend>Remove role from user</legend>
+
+        <input type="text" name="Name" placeholder="Username" />
+    
+        <select name="RoleName" class="form-control">
+            <option value="User">User</option>
+            <option value="SuperUser">SuperUser</option>
+            <option value="Moderator">Moderator</option>
+            <option value="Administrator">Administrator</option>
+        </select>
+    
+        <br />
+        <input type="submit" value="Remove" class="button-small" />
+    </fieldset>
+}
+
+<br />
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

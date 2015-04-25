@@ -1,0 +1,36 @@
+﻿@model PvPGamingWebsite.ViewModels.CreateTopicInForumViewModel
+<h3>New topic</h3>
+@using (Html.BeginForm("SaveNewTopic", "Forums", FormMethod.Post, new { style = "background-color:white; padding:15px;" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend></legend>
+        @*<div class="editor-label">
+            @Html.LabelFor(model => model.TopicData.Name)
+        </div>*@
+        <div class="editor-field input-prepend" style="width:50%;">
+            <span class="add-on" style="height:30px; font-size:22px;">
+                <i class="icon-comment"></i>
+            </span>
+            @Html.TextBoxFor(model => model.TopicData.Name, new { @class = "required requiredField error", style = "width:100%; height:30px; font-size:18px;", placeholder = "Name*" })
+            @Html.ValidationMessageFor(model => model.TopicData.Name)
+        </div>
+
+        @*<div class="editor-label">
+            @Html.LabelFor(model => model.TopicData.Description)
+        </div>*@
+        <div class="editor-field input-prepend" style="width:50%;">
+            <span class="add-on" style="height:25px; font-size:25px;">
+                <i class="icon-align-justify"></i>
+            </span>
+            @Html.TextAreaFor(model => model.TopicData.Description,  new { @class = "required requiredField error", style = "width:100%; height:200px;", placeholder = "Description*" })
+            @Html.ValidationMessageFor(model => model.TopicData.Description)
+        </div>
+    
+        <input type="number" name="ForumID" value="@Model.ForumID" style="display:none;" />
+        <br />
+        <input type="submit" value="Create" />
+    </fieldset>
+}
+

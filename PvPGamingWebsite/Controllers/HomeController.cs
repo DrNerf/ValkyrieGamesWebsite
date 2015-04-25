@@ -54,7 +54,7 @@ namespace PvPGamingWebsite.Controllers
 
         public ActionResult Team()
         {
-            return View();
+            return View(DataBase.TeamMembers.ToList());
         }
 
         public ActionResult Contact()
@@ -137,8 +137,9 @@ namespace PvPGamingWebsite.Controllers
         {
             FooterDataViewModel viewModel = new FooterDataViewModel();
             viewModel.LatestTopics = DataBase.ForumTopics.Include(x => x.TopicPosts).OrderBy(x => x.DateTimeCreated).Take(count).ToList();
-            viewModel.LatestPosts = DataBase.ForumPosts.Take(count).OrderBy(x => x.PostDateTime).ToList();
-            viewModel.LatestNews = DataBase.Posts.Take(count).OrderBy(x => x.PostDate).ToList();
+            viewModel.LatestPosts = DataBase.ForumPosts.OrderBy(x => x.PostDateTime).Take(count).ToList();
+            viewModel.LatestNews = DataBase.Posts.OrderBy(x => x.PostDate).Take(count).ToList();
+            viewModel.LatestProjects = DataBase.Projects.OrderBy(x => x.DateCreated).Take(count).ToList();
 
             foreach (var item in viewModel.LatestTopics)
 	        {
@@ -164,10 +165,15 @@ namespace PvPGamingWebsite.Controllers
             foreach (var item in projects)
             {
                 item.Title = Methods.TrimWithDotting(item.Title, 15);
-                item.Description = Methods.TrimWithDotting(item.Description, 25);
+                item.Description = Methods.TrimWithDotting(item.Description, 100);
             }
 
             return View(projects);
+        }
+
+        public ActionResult Project(int id)
+        {
+            return View(DataBase.Projects.FirstOrDefault(x => x.Id == id));
         }
     }
 }

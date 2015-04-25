@@ -1,0 +1,228 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model PvPGamingWebsite.ViewModels.ForumViewModel
+
+@{
+    ViewBag.Title = Model.Forum.Name;
+}
+
+<h2>@Model.Forum.Name</h2>
+@*<div class="form-control" style="height:50px; vertical-align:middle;">
+    <span class="glyphicon glyphicon-cog" style="font-size:25px; margin-right:15px;"></span>
+    <div style="display:inline-block; width:300px;">
+        <div class="input-group">
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="button" onclick="setToday();">Today</button>
+          </span>
+            <input type="text" id="datePicker" placeholder="Date" class="form-control" />
+            <span class="input-group-btn">
+                <button class="btn btn-default" onclick="clearDate();">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </button>
+                <button class="btn btn-default" onclick="sendDate();">
+                    <span class="glyphicon glyphicon-filter"></span>
+                </button>
+            </span>
+        </div>
+    </div>
+</div>
+<hr />*@
+
+@*<div>
+    <ul>
+        @foreach (var topic in Model.ForumTopics)
+        {
+            <li>
+                @{
+                    string topicName = topic.Name;
+                    if (topic.IsSticky)
+                    {
+                        topicName += "(STICKY!)";
+                    }
+
+                    if (topic.IsLocked)
+                    {
+                        topicName += "(LOCKED!)";
+                    }
+                    <h3><a href="/Forums/Topic/@topic.Id">@topicName</a></h3>
+                }
+                <span >From: @topic.Creator</span>
+                <span >Created: @topic.DateTimeCreated</span>
+                @if(User.IsInRole("Moderator"))
+                {
+                    <form action="/Forums/DeleteTopic" method="post" style="display:inline-block;">
+                        <input type="number" name="TopicID" value="@topic.Id" style="display:none" />
+                        <input type="number" name="ForumID" value="@Model.Forum.Id" style="display:none" />
+                        <button type="submit" class="button-small">
+                          <span class="icon-trash"></span> Delete
+                        </button>
+                    </form>
+                    if(!topic.IsSticky)
+                    {
+                        <a style="text-shadow:none;" href="/Forums/SetSticky?topicID=@(topic.Id)&forumID=@(Model.Forum.Id)&isSticky=true" class="btn btn-warning">
+                            <span class="icon-pushpin"></span>
+                            Sticky
+                        </a>
+                    }
+                    else
+                    {
+                        <a style="text-shadow:none;" href="/Forums/SetSticky?topicID=@(topic.Id)&forumID=@(Model.Forum.Id)&isSticky=false" class="btn btn-warning">
+                            <span class="icon-tag"></span>
+                            Remove Sticky
+                        </a>
+                    }
+                    
+                    if(!topic.IsLocked)
+                    {
+                        <a style="text-shadow:none;" href="/Forums/SetLocked?topicID=@(topic.Id)&forumID=@(Model.Forum.Id)&isLocked=true" class="btn btn-info">
+                            <span class="icon-lock"></span>
+                            Lock
+                        </a>
+                    }
+                    else
+                    {
+                        <a style="text-shadow:none;" href="/Forums/SetLocked?topicID=@(topic.Id)&forumID=@(Model.Forum.Id)&isLocked=false" class="btn btn-info">
+                            <span class="icon-tags"></span>
+                            Unlock
+                        </a>
+                    }
+                }
+            </li>
+        }
+    </ul>
+    @Html.PagedListPager(Model.ForumTopics, page => Url.Action("Forum",
+        new { id = Model.Forum.Id, page, date = Request.QueryString["date"] }), new PagedListRenderOptions { DisplayPageCountAndCurrentLocation = true })
+</div>*@
+
+<div class="row">
+    <div class="span12">
+        <div id="bbpress-forums" style="margin-left:15px;">
+			<div class="bbp-template-notice info">
+				<p class="bbp-forum-description">This forum page contains @Model.ForumTopics.Count topics.</p>
+			</div>
+			<ul id="bbp-forum-965" class="bbp-topics">
+				<li class="bbp-header">
+					<ul class="forum-titles">
+						<li class="bbp-topic-title">Topic</li>
+						<li class="bbp-topic-voice-count"></li>
+						<li class="bbp-topic-reply-count">Posts</li>
+						<li class="bbp-topic-freshness">Freshness</li>
+					</ul>
+				</li>
+				<li class="bbp-body">
+                    @foreach (var item in Model.ForumTopics)
+                    {
+					    <ul class="topic@(item.Id) post-993 topic type-topic status-publish hentry odd bbp-parent-forum-965 user-id-1 instock">
+						    <li class="bbp-topic-title">
+							    <i class="icon-comment"></i>
+							    <a class="bbp-topic-permalink" href="/Forums/Topic/@item.Id" title="@item.Name">
+                                    @if (item.IsLocked)
+                                    {
+                                        <i class="icon-lock"></i>
+                                    }
+                                    @if (item.IsSticky)
+                                    {
+                                        <i class="icon-pushpin"></i>
+                                    }
+                                    @item.Name
+							    </a>
+							    <p class="bbp-topic-meta">
+								    <span class="bbp-topic-started-by">started by: <a href="/Home/ViewProfile?name=@item.Creator" title="View profile" class="bbp-author-avatar" rel="nofollow"><img alt="" src="http://1.gravatar.com/avatar/38d93eff4c0db34aa79f07cf9ad1a89c?s=14&amp;d=http%3a%2f%2f1.gravatar.com%2favatar%2fad516503a11cd5ca435acc9bb6523536%3fs%3d14&amp;r=g" class="avatar avatar-14 photo"></a>&nbsp;<a href="/Home/ViewProfile?name=@item.Creator" title="View profile" class="bbp-author-name" rel="nofollow">@item.Creator</a></span>
+							    </p>
+                                @if (User.IsInRole("Moderator"))
+                                {
+                                    if (!item.IsSticky)
+                                    {
+                                        <a style="text-shadow:none;" href="/Forums/SetSticky?topicID=@(item.Id)&forumID=@(Model.Forum.Id)&isSticky=true">
+                                            <span class="icon-pushpin"></span>
+                                            Sticky
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a style="text-shadow:none;" href="/Forums/SetSticky?topicID=@(item.Id)&forumID=@(Model.Forum.Id)&isSticky=false">
+                                            <span class="icon-tag"></span>
+                                            Remove Sticky
+                                        </a>
+                                    }
+
+                                    if (!item.IsLocked)
+                                    {
+                                        <a style="text-shadow:none;" href="/Forums/SetLocked?topicID=@(item.Id)&forumID=@(Model.Forum.Id)&isLocked=true">
+                                            <span class="icon-lock"></span>
+                                            Lock
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a style="text-shadow:none;" href="/Forums/SetLocked?topicID=@(item.Id)&forumID=@(Model.Forum.Id)&isLocked=false">
+                                            <span class="icon-tags"></span>
+                                            Unlock
+                                        </a>
+                                    }
+                                    <a><span onclick="deleteTopic(@item.Id, @Model.Forum.Id);"><i class="icon-trash"></i> Delete</span></a>
+                                }
+						    </li>
+						    <li class="bbp-topic-voice-count"></li>
+						    <li class="bbp-topic-reply-count">@(item.TopicPosts.Count + 1)</li>
+						    <li class="bbp-topic-freshness">
+							    <a href="#" title="Post age">@((int)Math.Ceiling((DateTime.Now - item.DateTimeCreated).TotalDays)) days ago</a>
+						    </li>
+					    </ul> 
+                    }
+				</li>
+				<li class="bbp-footer">
+					<div class="tr">
+						<p>
+							<span class="td colspan4">&nbsp;</span>
+						</p>
+					</div>
+					<!-- .tr -->
+				</li>
+			</ul>
+			<!-- #bbp-forum-965 -->
+			<div class="bbp-pagination">
+				<div class="bbp-pagination-count">
+					Pages 
+				</div>
+				<div class="bbp-pagination-links">
+				</div>
+                    @Html.PagedListPager(Model.ForumTopics, page => Url.Action("Forum",
+                        new { id = Model.Forum.Id, page }), new PagedListRenderOptions { LiElementClasses = new List<string> { "inlineElement" } })
+			</div>
+		</div>
+    </div>
+</div>
+
+<hr />
+<div style="padding:10px;">
+    @{
+        Html.RenderPartial("_CreateTopic", new PvPGamingWebsite.ViewModels.CreateTopicInForumViewModel { ForumID = Model.Forum.Id });
+    }
+</div>
+
+@section head{
+    <style>
+        .inlineElement {
+            display: inline-block;
+            padding-left: 5px;
+        }
+    </style>
+}
+
+<script>
+    function deleteTopic(topicID, forumID) {
+        jQuery.post("/Forums/DeleteTopic", { TopicID: topicID, ForumID: forumID }, function (data) {
+            if (data) {
+                jQuery(".topic" + topicID).slideUp(1000);
+            }
+            else {
+                new PNotify({
+                    title: 'Whoopsay!',
+                    text: 'Something went very wrong ;(',
+                    type: 'error'
+                });
+            }
+        });
+    }
+</script>

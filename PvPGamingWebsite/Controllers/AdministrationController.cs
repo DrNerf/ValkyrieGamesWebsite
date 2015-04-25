@@ -9,6 +9,7 @@ using WebMatrix.WebData;
 using System.Web.Security;
 using PvPGamingWebsite.ViewModels;
 using System.Data.Entity;
+using PvPGamingWebsite.Statics;
 
 namespace PvPGamingWebsite.Controllers
 {
@@ -335,10 +336,16 @@ namespace PvPGamingWebsite.Controllers
         {
             if (IsAdministrator())
             {
+                var projects = DataBase.Projects.Include(x => x.Status).ToList();
+                foreach (var item in projects)
+                {
+                    item.ThumbnailURL = Methods.TrimWithDotting(item.ThumbnailURL, 15);
+                    item.HeaderURL = Methods.TrimWithDotting(item.HeaderURL, 15);
+                }
                 return View(new ProjectsPanelViewModel 
-                { 
+                {
                     AllProjectsStatuses = DataBase.ProjectsStatus.ToList(),
-                    Projects = DataBase.Projects.Include(x => x.Status).ToList()
+                    Projects = projects
                 });
             }
             else
@@ -401,6 +408,58 @@ namespace PvPGamingWebsite.Controllers
             else
             {
                 return Redirect("/Home/Index");
+            }
+        }
+
+        [Authorize(Roles = "Administrator")]
+        public ActionResult Team()
+        {
+            var members = DataBase.TeamMembers.ToList();
+            foreach (var item in members)
+            {
+                item.Information = Methods.TrimWithDotting(item.Information, 15);
+                if (!String.IsNullOrEmpty(item.Facebook))
+                {
+                    item.Facebook = Methods.TrimWithDotting(item.Facebook, 15);
+                }
+                if (!String.IsNullOrEmpty(item.ImageUrl))
+                {
+                    item.ImageUrl = Methods.TrimWithDotting(item.ImageUrl, 15);
+                }
+            }
+            return View(members);
+        }
+
+        [Authorize(Roles = "Administrator")]
+        [HttpPost]
+        public ActionResult AddTeamMember(TeamMember model)
+        {
+            try
+            {
+                DataBase.TeamMembers.Add(model);
+                DataBase.SaveChanges();
+                return Json(new { IsSuccess = true, Message = "" });
+            }
+            catch (Exception e)
+            {
+                return Json(new { IsSuccess = false, Message = e.Message });
+            }
+        }
+
+        [Authorize(Roles = "Administrator")]
+        [HttpGet]
+        public ActionResult DeleteTeamMember(int MemberID)
+        {
+            try
+            {
+                var member = DataBase.TeamMembers.FirstOrDefault(x => x.ID == MemberID);
+                DataBase.TeamMembers.Remove(member);
+                DataBase.SaveChanges();
+                return Json(new { IsSuccess = true, Message = "" }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                return Json(new { IsSuccess = false, Message = e.Message }, JsonRequestBehavior.AllowGet);
             }
         }
     }

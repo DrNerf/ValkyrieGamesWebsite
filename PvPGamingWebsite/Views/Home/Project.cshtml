@@ -1,0 +1,39 @@
+﻿@model PvPGamingWebsite.Models.Project
+
+@{
+    ViewBag.Title = "Project";
+}
+
+<div class="blog-post span12">
+    <div class="blog-image img_thumb entry-thumb">
+        <a href="/Home/Project/@(Model.Id)">
+            <img src="@Model.HeaderURL" onerror="brokenUrl(this);" class="attachment-small wp-post-image">
+        </a>
+        <div class="blog-date isodate-blog">
+            <span class="date">@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(Model.DateCreated.Month)<br>@Model.DateCreated.Day</span>
+        </div>
+    </div><!-- blog-image -->
+    <div class="blog-content">
+        <h2>
+            <a href="blog-post.html">@Model.Title</a>
+        </h2>
+        <p>
+            @Model.Description
+        </p>
+    </div>
+</div>
+
+@section head{
+    <style>
+        .inline {
+            display:inline !important;
+        }
+    </style>
+
+    <script>
+        defaultImg = "@(Url.Content("~/Content/design/img/defaults/817x320.jpg"))";
+        function brokenUrl(img) {
+            jQuery(img).attr("src", defaultImg);
+        }
+    </script>
+}

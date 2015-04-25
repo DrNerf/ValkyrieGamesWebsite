@@ -18,5 +18,6 @@ namespace PvPGamingWebsite.Contexts
         public DbSet<ProjectStatus> ProjectsStatus { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<UserProfileData> UsersProfiles { get; set; }
+        public DbSet<TeamMember> TeamMembers { get; set; }
     }
 }

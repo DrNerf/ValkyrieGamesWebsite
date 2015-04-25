@@ -1,0 +1,316 @@
+﻿@model PvPGamingWebsite.Models.Topic
+
+@{
+    ViewBag.Title = "Topic";
+}
+<h2>@Model.Name</h2>
+
+@*<div style="padding:15px;">
+    <div style="text-align:center; margin:0px; margin-right:15px; min-height:100px; display:inline-block;">
+        <h4>@Model.Creator</h4>
+        <br />
+        <img style="height:40px; width:125px;" src="~/Images/ForumRanks/@(Model.Rank).png" />
+    </div>
+    <div style="margin:0px; min-height:100px; display:inline-block;">
+        <h2>@Model.Name</h2>
+        <p>
+            @Html.Raw(Model.Description)
+        </p>
+        <h6 style="display:inline-block;">Posted on @Model.DateTimeCreated</h6>
+        @if(@Model.Creator == User.Identity.Name)
+        {
+            <button class="btn btn-default" onclick="showEditPopup(@Model.Id, '@(Html.Raw(Model.Description))');">
+                <span class="icon-pencil"></span>
+            </button>
+        }
+    </div>
+</div>
+
+<div style="padding:15px;">
+    @foreach (PvPGamingWebsite.Models.ForumPost post in Model.TopicPosts)
+    {
+        <div style="padding:0px;">
+            <div style="text-align:center; margin:0px; margin-right:15px; min-height:100px; display:inline-block;">
+                <h4>@post.Poster</h4>
+                <br />
+                <img style="height:40px; width:125px;" src="~/Images/ForumRanks/@(post.Rank).png" />
+            </div>
+            <div style="margin:0px; min-height:100px; display:inline-block;">
+                <p>
+                    @Html.Raw(post.Body)
+                </p>
+                <h6>Posted on @post.PostDateTime</h6>
+            </div>
+            @if (User.IsInRole("Moderator"))
+            {
+                <form method="post" action="/Forums/DeletePost" style="display:inline-block;">
+                    <input style="display:none;" type="number" name="PostID" value="@post.Id" />
+                    <input style="display:none;" type="number" name="TopicID" value="@Model.Id" />
+                    <input type="submit" value="Delete" class="" />
+                </form>
+            }
+            @if(post.Poster == User.Identity.Name)
+            {
+                <button class="btn btn-default" onclick="showPostEditPopup(@post.Id, '@(Html.Raw(post.Body))', @Model.Id);">
+                    <span class="icon-edit"></span>
+                </button>
+            }
+        </div>
+    }
+</div>
+@if(!Model.IsLocked)
+{
+    <h2>New post</h2>
+    <div style="border:1px solid black; padding:10px;">
+        @{
+            Html.RenderPartial("_CreateNewPost", new PvPGamingWebsite.ViewModels.CreatePostInTopicViewModel { TopicID = Model.Id });
+        }
+    </div>
+}
+else
+{
+    <h2>This topic is locked by Moderator!</h2>    
+}
+
+<div title="Edit the topic description:" id="EditPopup" style="display:none;">
+    <form method="post" action="/Forums/EditTopicData">
+        <input id="EditTopicId" type="number" name="Id" style="display:none;" />
+        <textarea id="EditTopicTextArea" class="EditTextArea" name="Description"></textarea>
+        <br />
+        <button type="submit" class="icon-success">
+            <span class="icon-floppy-disk"></span> Save
+        </button>
+    </form>
+</div>
+
+<div title="Edit the topic description:" id="PostEditPopup" style="display:none;">
+    <form method="post" action="/Forums/EditTopicPostData">
+        <input id="PostEditPostId" type="number" name="Id" style="display:none;" />
+        <input id="PostEditTopicId" type="number" name="TopicID" style="display:none;" />
+        <textarea id="PostEditTopicTextArea" class="EditTextArea" name="Body"></textarea>
+        <br />
+        <button type="submit" class="button-small">
+            <span class="icon-floppy-disk"></span> Save
+        </button>
+    </form>
+</div>*@
+
+<div class="row">
+	<div class="span12">
+		<div id="bbpress-forums" style="margin-left:15px;">
+			<div class="bbp-template-notice info">
+                @if(@Model.TopicPosts.Count > 1)
+                {
+				    <p class="bbp-topic-description">This topic contains @Model.TopicPosts.Count replies, and was last updated by <a href="#" title="View admin's profile" class="bbp-author-avatar" rel="nofollow"><img alt="" src="http://1.gravatar.com/avatar/38d93eff4c0db34aa79f07cf9ad1a89c?s=14&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D14&amp;r=G" class="avatar avatar-14 photo"></a>&nbsp;<a href="/Home/ViewProfile?name=@Model.TopicPosts[Model.TopicPosts.Count - 1].Poster" title="View profile" class="bbp-author-name" rel="nofollow">@Model.TopicPosts[Model.TopicPosts.Count - 1].Poster</a> <a href="#" title="">, @((int)Math.Ceiling((DateTime.Now - Model.TopicPosts[Model.TopicPosts.Count - 1].PostDateTime).TotalDays)) days ago</a>.</p>
+                }
+                else
+                {
+                    <p class="bbp-topic-description">This topic contains @Model.TopicPosts.Count replies, and was last updated by <a href="#" title="View admin's profile" class="bbp-author-avatar" rel="nofollow"><img alt="" src="http://1.gravatar.com/avatar/38d93eff4c0db34aa79f07cf9ad1a89c?s=14&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D14&amp;r=G" class="avatar avatar-14 photo"></a>&nbsp;<a href="/Home/ViewProfile?name=@Model.Creator" title="View profile" class="bbp-author-name" rel="nofollow">@Model.Creator</a> <a href="#" title="">, @((int)Math.Ceiling((DateTime.Now - Model.DateTimeCreated).TotalDays)) days ago</a>.</p>
+                }
+			</div>
+			<ul id="topic-993-replies" class="forums bbp-replies">
+				<li class="bbp-header">
+					<div class="bbp-reply-author">Author</div>
+					<!-- .bbp-reply-author -->
+					<div class="bbp-reply-content">
+						Posts
+					</div>
+					<!-- .bbp-reply-content -->
+				</li>
+
+                <li class="bbp-body">
+					<div class="bbp-reply-header">
+						<div class="bbp-meta">
+							<span class="bbp-reply-post-date">@Model.DateTimeCreated</span>
+                            @if(@Model.Creator == User.Identity.Name)
+                            {
+							    <span onclick="showEditPopup(@Model.Id, '@(Html.Raw(Model.Description))');" class="bbp-reply-permalink"><i class="icon-pencil"></i> Edit</span>
+							}
+                            <span class="bbp-admin-links"></span>
+						</div>
+						<!-- .bbp-meta -->
+					</div>
+					<!-- #post-993 -->
+					<div class="post-993 topic type-topic status-publish hentry odd bbp-parent-forum-965 bbp-parent-topic-993 bbp-reply-position-1 user-id-1 topic-author instock">
+						<div class="bbp-reply-author">
+							<a href="#" title="View admin's profile" class="bbp-author-avatar" rel="nofollow"><img alt="" src="http://1.gravatar.com/avatar/38d93eff4c0db34aa79f07cf9ad1a89c?s=80&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D80&amp;r=G" class="avatar avatar-80 photo"></a><br><a href="#" title="View admin's profile" class="bbp-author-name" rel="nofollow">@Model.Creator</a><br>
+							<div class="bbp-author-role">@Model.Rank</div>
+						</div>
+						<!-- .bbp-reply-author -->
+						<div class="bbp-reply-content">
+							<p>
+                                @Model.Description
+							</p>
+						</div>
+						<!-- .bbp-reply-content -->
+					</div>
+					<!-- .reply -->
+				</li>
+
+				<!-- .bbp-header -->
+                @foreach (var item in Model.TopicPosts)
+                {
+				    <li class="bbp-body">
+					    <div class="bbp-reply-header">
+						    <div class="bbp-meta">
+							    <span class="bbp-reply-post-date">@item.PostDateTime</span>
+                                @if(item.Poster == User.Identity.Name)
+                                {
+							        <span onclick="showPostEditPopup(@item.Id, '@(Html.Raw(item.Body))', @Model.Id);" class="bbp-reply-permalink"><i class="icon-pencil"></i> Edit</span>
+							    }
+                                @if (User.IsInRole("Moderator"))
+                                {
+                                    <form method="post" action="/Forums/DeletePost" style="height:10px; margin-right:10px; float:right; display:inline-block;">
+                                        <input style="display:none;" type="number" name="PostID" value="@item.Id" />
+                                        <input style="display:none;" type="number" name="TopicID" value="@Model.Id" />
+                                        <span class="bbp-reply-permalink" onclick="jQuery(this).parent().submit();"><i class="icon-trash"></i> Delete</span>
+                                    </form>
+                                }
+                                <span class="bbp-admin-links"></span>
+						    </div>
+						    <!-- .bbp-meta -->
+					    </div>
+					    <!-- #post-993 -->
+					    <div class="post-993 topic type-topic status-publish hentry odd bbp-parent-forum-965 bbp-parent-topic-993 bbp-reply-position-1 user-id-1 topic-author instock">
+						    <div class="bbp-reply-author">
+							    <a href="#" title="View admin's profile" class="bbp-author-avatar" rel="nofollow"><img alt="" src="http://1.gravatar.com/avatar/38d93eff4c0db34aa79f07cf9ad1a89c?s=80&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D80&amp;r=G" class="avatar avatar-80 photo"></a><br><a href="#" title="View admin's profile" class="bbp-author-name" rel="nofollow">@item.Poster</a><br>
+							    <div class="bbp-author-role">@item.Rank</div>
+						    </div>
+						    <!-- .bbp-reply-author -->
+						    <div class="bbp-reply-content">
+							    <p>
+                                    @item.Body
+							    </p>
+							</div>
+						    <!-- .bbp-reply-content -->
+					    </div>
+					    <!-- .reply -->
+				    </li>
+                }
+				<!-- .bbp-body -->
+				<li class="bbp-footer">
+					<div class="bbp-reply-author">Author</div>
+					<div class="bbp-reply-content">
+						Posts
+					</div>
+					<!-- .bbp-reply-content -->
+				</li>
+				<!-- .bbp-footer -->
+			</ul>
+			<!-- #topic-993-replies -->
+			<div class="bbp-pagination">
+				<div class="bbp-pagination-count">
+					Viewing 1 post (of 1 total)
+				</div>
+				<div class="bbp-pagination-links">
+				</div>
+			</div>
+		</div>
+		<div class="clear"></div>
+        <div style="margin-left:15px;">
+            @if(!Model.IsLocked)
+            {
+                <div>
+                    @{
+                        Html.RenderPartial("_CreateNewPost", new PvPGamingWebsite.ViewModels.CreatePostInTopicViewModel { TopicID = Model.Id });
+                    }
+                </div>
+            }
+            else
+            {
+			    <div id="no-reply-993" class="bbp-no-reply">
+				    <div class="bbp-template-notice">
+					    <p>This topic is locked by Moderator.</p>
+				    </div>
+			    </div>
+            }
+        </div>
+	</div>
+</div>
+
+<div title="Edit the topic description:" id="EditPopup" style="display:none;">
+    <form method="post" action="/Forums/EditTopicData" style="height:90%;">
+        <input id="EditTopicId" type="number" name="Id" style="display:none;" />
+        <textarea id="EditTopicTextArea" class="EditTextArea" name="Description"></textarea>
+        <br />
+        <button type="submit" class="icon-success">
+            <span class="icon-floppy-disk"></span> Save
+        </button>
+    </form>
+</div>
+
+<div title="Edit the post:" id="PostEditPopup" style="display:none;">
+    <form method="post" action="/Forums/EditTopicPostData" style="height:90%;">
+        <input id="PostEditPostId" type="number" name="Id" style="display:none;" />
+        <input id="PostEditTopicId" type="number" name="TopicID" style="display:none;" />
+        <textarea id="PostEditTopicTextArea" class="EditTextArea" name="Body"></textarea>
+        <br />
+        <button type="submit" class="button-small">
+            <span class="icon-floppy-disk"></span> Save
+        </button>
+    </form>
+</div>
+
+@section head{
+    <link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
+    <style>
+        .ui-dialog { z-index: 9999999 !important ;}
+        .ui-front { z-index: 1000 !important; }
+        .bbp-reply-permalink {
+            float:right;
+            cursor:pointer;
+        }
+        .bbp-reply-permalink:hover {
+            color:#ff5b5b;
+        }
+
+        .EditTextArea {
+            width:90%;
+            height:80%;
+        }
+    </style>
+}
+
+@section scripts{
+    <script src="~/Scripts/jquery-ui-1.8.24.min.js"></script>
+    <script>
+        function showEditPopup(id, currentDescription) {
+            jQuery("#EditTopicId").val(id);
+            jQuery("#EditTopicTextArea").val(currentDescription);
+
+            jQuery("#EditPopup").dialog({
+                width: 400,
+                height: 320,
+                modal: true,
+                show: {
+                    effect: "blind",
+                    duration: 1000
+                },
+                hide: {
+                    effect: "fold",
+                    duration: 1000
+                }
+            });
+        }
+
+        function showPostEditPopup(id, body, TopicID) {
+            jQuery("#PostEditPostId").val(id);
+            jQuery("#PostEditTopicTextArea").val(body);
+            jQuery("#PostEditTopicId").val(TopicID);
+
+            jQuery("#PostEditPopup").dialog({
+                width: 400,
+                height: 320,
+                modal: true,
+                show: {
+                    effect: "blind",
+                    duration: 1000
+                },
+                hide: {
+                    effect: "fold",
+                    duration: 1000
+                }
+            });
+        }
+    </script>
+}

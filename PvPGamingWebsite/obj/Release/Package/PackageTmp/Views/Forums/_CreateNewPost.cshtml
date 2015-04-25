@@ -1,0 +1,19 @@
+﻿@model PvPGamingWebsite.ViewModels.CreatePostInTopicViewModel
+
+<h3>New post</h3>
+@using (Html.BeginForm("CreatePost", "Forums", FormMethod.Post, new { style = "background-color:white; padding:10px;" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend></legend>
+        <div class="editor-field">
+            @Html.TextAreaFor(model => model.PostData.Body, new { style = "height:200px; width:50%;" })
+            @Html.ValidationMessageFor(model => model.PostData.Body)
+        </div>
+    
+        <input type="number" name="TopicID" value="@Model.TopicID" style="display:none;" />
+        <br />
+        <input type="submit" value="Create" />
+    </fieldset>
+}

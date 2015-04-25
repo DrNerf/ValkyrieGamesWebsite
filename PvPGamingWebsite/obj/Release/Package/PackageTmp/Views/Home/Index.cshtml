@@ -1,0 +1,121 @@
+﻿@using PvPGamingWebsite.Models;
+@using System.Collections.Generic;
+@model List<Post>
+
+@{
+    ViewBag.Title = "Home Page";
+}
+@for (int i = Model.Count - 1; i >= 0; i--)
+{
+    @*<li style="background-color:#7ac0da;padding:10px;display:block;">
+        <h3>@Model[i].Title</h3>
+        <p>@Html.Raw(Model[i].Body)</p>
+        <h6><span style="margin-right:25px;">At: @Model[i].PostDate</span><span>By: @Model[i].Author</span></h6>
+        @if (@User.IsInRole("Administrator"))
+        {
+            <form action="/Administration/DeletePost" method="post">
+                <input style="display:none;" type="number" value="@Model[i].Id" name="Id" />
+                <input type="submit" value="DELETE" class="btn btn-danger" />
+            </form>
+        }
+    </li>*@
+    
+    <div class="blog-post">
+	    <div class="blog-image">
+		    <a href="blog-post.html"><img src="~/Content/design/img/defaults/817x320.jpg"></a>
+		    <div class="blog-date">
+			    <span class="date">@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(Model[i].PostDate.Month)<br>@Model[i].PostDate.Day</span>
+		    </div>
+		    <!-- blog-rating -->
+	    </div>
+	    <!-- blog-image -->
+	    <div class="blog-content">
+		    <h2><a>@Model[i].Title</a></h2>
+		    <p>@Model[i].Body</p>
+	    </div>
+	    <!-- blog-content -->
+	    <div class="blog-info">
+		    <div class="post-pinfo">
+			    <span class="icon-user"></span> <a data-original-title="View" all="" posts="" by="" admin="" data-toggle="tooltip" href="/Home/ViewProfile?name=@(Model[i].Author)">@Model[i].Author</a> &nbsp
+			    <span class="icon-tags"></span>    <a href="#"> Adventure,  </a>  <a href="#"> RPG,  </a>  <a href="#"> Shooter,  </a>  <a href="#"> Strategy,  </a>
+		    </div>
+		    <!-- post-pinfo -->
+		    <div class="clear"></div>
+	    </div>
+	    <!-- blog-info -->
+    </div>
+    <!-- /.blog-post -->
+    <div class="block-divider"></div>
+}
+
+@section sidebar{
+<!-- Sidebar -->
+    <div class="span4">
+	    <div class="block span4 first sidebar">
+		    <div class="widget">
+			    <div class="title-wrapper">
+				    <h3 class="widget-title">Find us on facebook!</h3>
+				    <div class="clear"></div>
+			    </div>
+			    <div class="wcontainer">
+				    <div class="textwidget">
+					    <div class="fb-page" data-href="https://www.facebook.com/ValkyrieGames" data-width="100%" data-height="290" data-hide-cover="false" data-show-facepile="true" data-show-posts="false"></div>
+                    </div>
+			    </div>
+		    </div>			
+		    <div class="widget">
+			    <h3>Our latest work</h3>
+			    <div class="wcontainer">
+				    <div class="wcontent wprojects">                 
+					    <a href="#" data-toggle="tooltip" data-original-title="The swamp lord"><img width="305" height="305" src="~/Content/design/img/defaults/305x305.jpg" class="attachment-post-thumbnail wp-post-image" alt="7"></a>
+					    <a href="#" data-toggle="tooltip" data-original-title="Call of the dragon"><img width="305" height="305" src="~/Content/design/img/defaults/305x305.jpg" class="attachment-post-thumbnail wp-post-image" alt="6"></a>
+					    <a href="#" data-toggle="tooltip" data-original-title="Evil intentions"><img width="305" height="305" src="~/Content/design/img/defaults/305x305.jpg" class="attachment-post-thumbnail wp-post-image" alt="5"></a>
+					    <a href="#" data-toggle="tooltip" data-original-title="Under the water"><img width="305" height="305" src="~/Content/design/img/defaults/305x305.jpg" class="attachment-post-thumbnail wp-post-image" alt="4"></a>
+					    <a href="#" data-toggle="tooltip" data-original-title="The boss"><img width="305" height="305" src="~/Content/design/img/defaults/305x305.jpg" class="attachment-post-thumbnail wp-post-image" alt="3"></a>
+					    <a href="#" data-toggle="tooltip" data-original-title="The god"><img width="305" height="305" src="~/Content/design/img/defaults/305x305.jpg" class="attachment-post-thumbnail wp-post-image" alt="2"></a>
+					    </div>
+				    </div>
+			    </div>								 
+								 
+	    </div>
+	    <!-- Sidebar -->
+    </div>
+    <div id="fb-root"></div>
+}
+
+@section scripts{
+    <script>
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: 'your-app-id',
+                xfbml: true,
+                version: 'v2.3'
+            });
+        };
+
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) { return; }
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+
+    <script>
+        jQuery(document).ready(function(){
+            jQuery("#BodyContainer").removeClass("span12");
+            jQuery("#block-2").removeClass("span12");
+            jQuery("#BodyContainer").addClass("span8");
+            jQuery("#block-2").addClass("span8");
+        });
+    </script>
+
+    <script>(function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/bg_BG/sdk.js#xfbml=1&version=v2.3";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+}

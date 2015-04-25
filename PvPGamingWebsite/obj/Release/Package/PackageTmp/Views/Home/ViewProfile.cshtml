@@ -1,0 +1,50 @@
+﻿@model PvPGamingWebsite.Models.UserProfileData
+@{
+    ViewBag.Title = "ViewProfile";
+    if(String.IsNullOrEmpty(Model.Color))
+    {
+        Model.Color = "#000";
+    }
+
+    if (String.IsNullOrEmpty(Model.Email))
+    {
+        Model.Email = "No email";
+    }
+}
+
+<h2>@(Request.QueryString["name"])'s Profile</h2>
+
+<div class="row">
+    <div class="col-lg-6">
+        @if(String.IsNullOrEmpty(Model.PictureURL))
+        {
+            <img onerror="brokenUrl();" id="profileImage" src="~/Images/no-avatar.jpg" alt="Your profile picture." width="400" height="400" />
+        }
+        else
+        {
+            <img onerror="brokenUrl();" id="profileImage" src="@(Model.PictureURL)" alt="Your profile picture." width="400" height="400" />
+        }
+    </div>
+    <div class="col-lg-6">
+        @if (Model.IsBanned)
+        {
+            <div class="alert alert-danger">This user has been baned!</div>
+        }
+        else
+        {
+            if (Model.IsMuted)
+            {
+                <div class="alert alert-warning">This user has been muted from all chats!</div>
+            }
+            else
+            {
+                <div class="alert alert-success">This account is ACTIVE!</div>
+            }
+        }
+        <br />
+        <div>
+            <h3>Email: @Model.Email</h3>
+            <h3>Favorite color: <div style="display:inline-block; width:100px; height:25px; background-color:@(Model.Color);"></div></h3>
+        </div>
+    </div>
+</div>
