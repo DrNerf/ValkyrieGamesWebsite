@@ -3,35 +3,74 @@
     ViewBag.Title = "Register";
 }
 
-<hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
-    <h2>Create a new account.</h2>
-</hgroup>
-<br />
-@using (Html.BeginForm()) {
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary()
 
-    <fieldset>
-        <legend></legend>
+<div id="register_form_wrapper">
+    <h3 class="register_title">Create a new account.</h3>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary()
+
         <ol>
             <li>
-                @Html.LabelFor(m => m.UserName)
-                @Html.TextBoxFor(m => m.UserName)
+                <input type="text" class="input_" placeholder="Username" name="UserName">
             </li>
             <li>
-                @Html.LabelFor(m => m.Password)
-                @Html.PasswordFor(m => m.Password)
+                <input type="password" class="input_" placeholder="Password" name="Password">
             </li>
             <li>
-                @Html.LabelFor(m => m.ConfirmPassword)
-                @Html.PasswordFor(m => m.ConfirmPassword)
+                <input type="password" class="input_" placeholder="Confirm Password" name="ConfirmPassword">
             </li>
         </ol>
-        <input type="submit" value="Register" />
-    </fieldset>
-}
+        <input id="register_submit" type="submit" value="Register" />
+    }
+</div>
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+}
+
+@section head {
+    <style>
+        ol {
+            list-style-type: none;
+        }
+
+        .validation-summary-errors {
+            text-shadow: 0 1px 0 rgba(255, 255, 255, .2);
+            -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, .25), 0 1px 2px rgba(0, 0, 0, .05);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .25), 0 1px 2px rgba(0, 0, 0, .05);
+            background-image: -webkit-linear-gradient(top, #fcf8e3 0%, #f8efc0 100%);
+            background-image:      -o-linear-gradient(top, #fcf8e3 0%, #f8efc0 100%);
+            background-image: -webkit-gradient(linear, left top, left bottom, from(#fcf8e3), to(#f8efc0));
+            background-image:         linear-gradient(to bottom, #fcf8e3 0%, #f8efc0 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fffcf8e3', endColorstr='#fff8efc0', GradientType=0);
+            background-repeat: repeat-x;
+            border-color: #f5e79e;
+        }
+
+        input.input_ {
+            padding: 15px 25px 15px 25px;
+            width: 85%;
+        }
+
+        .register_title {
+            width: 100%;
+            font-size: 20px !important;
+            margin-top: 0px !important;
+        }
+
+        #register_form_wrapper {
+            background-color: #ffffff;
+            width: 50%;
+            margin: 0px auto;
+            overflow: hidden;
+        }
+
+        #register_submit {
+            margin-left: 4.3%;
+        }
+    </style>
 }
