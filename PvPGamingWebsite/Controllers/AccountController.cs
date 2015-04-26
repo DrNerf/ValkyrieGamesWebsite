@@ -109,7 +109,8 @@ namespace PvPGamingWebsite.Controllers
                     { 
                         IsBanned = false,
                         IsMuted = false,
-                        UserId = usersdb.UserProfiles.FirstOrDefault(x => x.UserName == model.UserName).UserId
+                        UserId = usersdb.UserProfiles.FirstOrDefault(x => x.UserName == model.UserName).UserId,
+                        Email = model.Email
                     });
                     db.SaveChanges();
                     return RedirectToAction("Index", "Home");
