@@ -15,7 +15,7 @@
 <h2>@(Request.QueryString["name"])'s Profile</h2>
 
 <div class="row">
-    <div class="col-lg-6">
+    <div class="span6">
         @if(String.IsNullOrEmpty(Model.PictureURL))
         {
             <img onerror="brokenUrl();" id="profileImage" src="~/Images/no-avatar.jpg" alt="Your profile picture." width="400" height="400" />
@@ -25,7 +25,7 @@
             <img onerror="brokenUrl();" id="profileImage" src="@(Model.PictureURL)" alt="Your profile picture." width="400" height="400" />
         }
     </div>
-    <div class="col-lg-6">
+    <div class="span5">
         @if (Model.IsBanned)
         {
             <div class="alert alert-danger">This user has been baned!</div>
