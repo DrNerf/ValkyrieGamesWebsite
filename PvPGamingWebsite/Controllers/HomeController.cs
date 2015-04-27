@@ -42,7 +42,7 @@ namespace PvPGamingWebsite.Controllers
             ViewBag.IsAdmin = IsAdministrator();
             ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
 
-            return View(DataBase.Posts.ToList());
+            return View(DataBase.Posts.OrderByDescending(x => x.PostDate).ToList());
         }
 
         public ActionResult About()
@@ -136,10 +136,10 @@ namespace PvPGamingWebsite.Controllers
         public ActionResult GetFooterRecords(int count)
         {
             FooterDataViewModel viewModel = new FooterDataViewModel();
-            viewModel.LatestTopics = DataBase.ForumTopics.Include(x => x.TopicPosts).OrderBy(x => x.DateTimeCreated).Take(count).ToList();
-            viewModel.LatestPosts = DataBase.ForumPosts.OrderBy(x => x.PostDateTime).Take(count).ToList();
-            viewModel.LatestNews = DataBase.Posts.OrderBy(x => x.PostDate).Take(count).ToList();
-            viewModel.LatestProjects = DataBase.Projects.OrderBy(x => x.DateCreated).Take(count).ToList();
+            viewModel.LatestTopics = DataBase.ForumTopics.Include(x => x.TopicPosts).OrderByDescending(x => x.DateTimeCreated).Take(count).ToList();
+            viewModel.LatestPosts = DataBase.ForumPosts.OrderByDescending(x => x.PostDateTime).Take(count).ToList();
+            viewModel.LatestNews = DataBase.Posts.OrderByDescending(x => x.PostDate).Take(count).ToList();
+            viewModel.LatestProjects = DataBase.Projects.OrderByDescending(x => x.DateCreated).Take(count).ToList();
 
             foreach (var item in viewModel.LatestTopics)
 	        {

@@ -19,5 +19,6 @@ $(document).ready(function () {
         $("#PostsFooterTemplate").tmpl(data.LatestPosts).appendTo("#PostsFooter");
         $("#NewsFooterTemplate").tmpl(data.LatestNews).appendTo("#NewsFooter");
         $("#ProjectsFooterTemplate").tmpl(data.LatestProjects).appendTo("#ProjectsFooter");
+        $("#SideBarProjectTemplate").tmpl(data.LatestProjects).appendTo("#ProjectsSideBar");
     });
 });

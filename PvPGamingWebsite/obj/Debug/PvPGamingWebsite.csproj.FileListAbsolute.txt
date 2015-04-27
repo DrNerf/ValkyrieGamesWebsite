@@ -251,3 +251,4 @@ D:\Projects\Web\ValkyrieGamesWebsite\ValkyrieGamesWebsite\PvPGamingWebsite\obj\D
 D:\Projects\Web\ValkyrieGamesWebsite\ValkyrieGamesWebsite\PvPGamingWebsite\obj\Debug\PvPGamingWebsite.csproj.GenerateResource.Cache
 D:\Projects\Web\ValkyrieGamesWebsite\ValkyrieGamesWebsite\PvPGamingWebsite\obj\Debug\PvPGamingWebsite.dll
 D:\Projects\Web\ValkyrieGamesWebsite\ValkyrieGamesWebsite\PvPGamingWebsite\obj\Debug\PvPGamingWebsite.pdb
+F:\Projects\PvPGamingWebsite\PvPGamingWebsite\obj\Debug\PvPGamingWebsite.Migrations.ImageInNewsPost.resources

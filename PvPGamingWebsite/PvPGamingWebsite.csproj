@@ -277,6 +277,10 @@
     <Compile Include="Migrations\201504142036156_TeamMemberImageUrl.Designer.cs">
       <DependentUpon>201504142036156_TeamMemberImageUrl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201504271853089_ImageInNewsPost.cs" />
+    <Compile Include="Migrations\201504271853089_ImageInNewsPost.Designer.cs">
+      <DependentUpon>201504271853089_ImageInNewsPost.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Category.cs" />
@@ -727,6 +731,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201504142036156_TeamMemberImageUrl.resx">
       <DependentUpon>201504142036156_TeamMemberImageUrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201504271853089_ImageInNewsPost.resx">
+      <DependentUpon>201504271853089_ImageInNewsPost.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

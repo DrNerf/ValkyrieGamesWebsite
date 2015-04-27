@@ -123,3 +123,5 @@ F:\Projects\PvPGamingWebsite\PvPGamingWebsite\bin\System.Web.Services.dll
 F:\Projects\PvPGamingWebsite\PvPGamingWebsite\bin\System.Xml.dll
 F:\Projects\PvPGamingWebsite\PvPGamingWebsite\bin\System.Xml.Linq.dll
 F:\Projects\PvPGamingWebsite\PvPGamingWebsite\bin\System.Net.Http.Formatting.xml
+F:\Projects\PvPGamingWebsite\PvPGamingWebsite\obj\Release\PvPGamingWebsite.csprojResolveAssemblyReference.cache
+F:\Projects\PvPGamingWebsite\PvPGamingWebsite\obj\Release\PvPGamingWebsite.Migrations.ImageInNewsPost.resources

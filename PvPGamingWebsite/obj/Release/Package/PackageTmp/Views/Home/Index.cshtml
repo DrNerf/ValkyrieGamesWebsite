@@ -5,7 +5,7 @@
 @{
     ViewBag.Title = "Home Page";
 }
-@for (int i = Model.Count - 1; i >= 0; i--)
+@foreach(var item in Model)
 {
     @*<li style="background-color:#7ac0da;padding:10px;display:block;">
         <h3>@Model[i].Title</h3>
@@ -22,22 +22,28 @@
     
     <div class="blog-post">
 	    <div class="blog-image">
-		    <a href="blog-post.html"><img src="~/Content/design/img/defaults/817x320.jpg"></a>
+            @if (String.IsNullOrEmpty(item.Image))
+            {
+		        <img src="~/Content/design/img/defaults/817x320.jpg">
+            }
+            else
+            {
+                <img src="@item.Image">
+            }
 		    <div class="blog-date">
-			    <span class="date">@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(Model[i].PostDate.Month)<br>@Model[i].PostDate.Day</span>
+			    <span class="date">@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(item.PostDate.Month)<br>@item.PostDate.Day</span>
 		    </div>
 		    <!-- blog-rating -->
 	    </div>
 	    <!-- blog-image -->
 	    <div class="blog-content">
-		    <h2><a>@Model[i].Title</a></h2>
-		    <p>@Model[i].Body</p>
+		    <h2><a>@item.Title</a></h2>
+		    <p>@item.Body</p>
 	    </div>
 	    <!-- blog-content -->
 	    <div class="blog-info">
 		    <div class="post-pinfo">
-			    <span class="icon-user"></span> <a data-original-title="View" all="" posts="" by="" admin="" data-toggle="tooltip" href="/Home/ViewProfile?name=@(Model[i].Author)">@Model[i].Author</a> &nbsp
-			    <span class="icon-tags"></span>    <a href="#"> Adventure,  </a>  <a href="#"> RPG,  </a>  <a href="#"> Shooter,  </a>  <a href="#"> Strategy,  </a>
+			    <span class="icon-user"></span> <a data-original-title="View" all="" posts="" by="" admin="" data-toggle="tooltip" href="/Home/ViewProfile?name=@(item.Author)">@item.Author</a>
 		    </div>
 		    <!-- post-pinfo -->
 		    <div class="clear"></div>
@@ -66,17 +72,21 @@
 		    <div class="widget">
 			    <h3>Our latest work</h3>
 			    <div class="wcontainer">
-				    <div class="wcontent wprojects">                 
-					    <a href="#" data-toggle="tooltip" data-original-title="The swamp lord"><img width="305" height="305" src="~/Content/design/img/defaults/305x305.jpg" class="attachment-post-thumbnail wp-post-image" alt="7"></a>
-					    <a href="#" data-toggle="tooltip" data-original-title="Call of the dragon"><img width="305" height="305" src="~/Content/design/img/defaults/305x305.jpg" class="attachment-post-thumbnail wp-post-image" alt="6"></a>
-					    <a href="#" data-toggle="tooltip" data-original-title="Evil intentions"><img width="305" height="305" src="~/Content/design/img/defaults/305x305.jpg" class="attachment-post-thumbnail wp-post-image" alt="5"></a>
-					    <a href="#" data-toggle="tooltip" data-original-title="Under the water"><img width="305" height="305" src="~/Content/design/img/defaults/305x305.jpg" class="attachment-post-thumbnail wp-post-image" alt="4"></a>
-					    <a href="#" data-toggle="tooltip" data-original-title="The boss"><img width="305" height="305" src="~/Content/design/img/defaults/305x305.jpg" class="attachment-post-thumbnail wp-post-image" alt="3"></a>
-					    <a href="#" data-toggle="tooltip" data-original-title="The god"><img width="305" height="305" src="~/Content/design/img/defaults/305x305.jpg" class="attachment-post-thumbnail wp-post-image" alt="2"></a>
-					    </div>
-				    </div>
-			    </div>								 
-								 
+				    <div class="wcontent wprojects" id="ProjectsSideBar">                 
+					    
+					</div>
+				</div>
+			</div>								 
+			<script type="text/x-jquery-tmpl" id="SideBarProjectTemplate">
+                <a href="/Home/Project/${Id}" data-toggle="tooltip" data-original-title="The swamp lord">
+                    @*<img width="305" height="305" src="~/Content/design/img/defaults/305x305.jpg" class="attachment-post-thumbnail wp-post-image" alt="">*@
+                    {{if ThumbnailURL}}
+						<img src="${ThumbnailURL}" class="attachment-post-thumbnail wp-post-image" alt="${Title}" onerror="jQuery(this).attr('src', '@(Url.Content("~/Content/design/img/defaults/305x305.jpg"))');">
+                    {{else}}
+						<img src="@Url.Content("~/Content/design/img/defaults/305x305.jpg")" class="attachment-post-thumbnail wp-post-image" alt="${Title}">
+                    {{/if}}
+                </a>
+			</script>				 
 	    </div>
 	    <!-- Sidebar -->
     </div>
